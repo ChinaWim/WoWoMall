@@ -1,0 +1,51 @@
+server:
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+
+spring:
+  datasource:
+    druid:
+      username: root
+      password: m969130721
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://118.89.50.153:3306/wowomall?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      max-active: 50
+      min-idle: 10
+      initial-size: 10
+      max-wait: 10
+      default-auto-commit: true
+  thymeleaf:
+    servlet:
+      content-type: text/html
+    encoding: UTF-8
+    mode: HTML5
+    suffix: .html
+    prefix: classpath:templates/
+    cache: false
+  mvc:
+    view:
+      suffix: .html
+      prefix: /
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 30MB
+  http:
+    encoding:
+      charset: UTF-8
+
+mybatis:
+  config-location: classpath:mybatis.config.xml
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.ming.wowomall.pojo
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+logging:
+  config: classpath:logback.xml
