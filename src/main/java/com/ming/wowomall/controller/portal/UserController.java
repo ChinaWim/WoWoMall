@@ -80,7 +80,7 @@ public class UserController {
     public Object getUserInfo(HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
-            return ServerResponse.createByErrorMessage("用户未登录,获取当前用户信息失败");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return ServerResponse.createBySuccess(currentUser);
     }
@@ -131,7 +131,7 @@ public class UserController {
     public Object resetPassword(String passwordOld,String passwordNew,HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
-            return ServerResponse.createByErrorMessage("用户未登录");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
         }
         return userService.resetPassword(passwordOld,passwordNew,currentUser.getId());
     }
@@ -146,7 +146,7 @@ public class UserController {
     public Object updateInformation(User user,HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
-            return ServerResponse.createByErrorMessage("用户未登录,获取当前用户信息失败");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         user.setId(currentUser.getId());
         ServerResponse response = userService.updateInformation(user);

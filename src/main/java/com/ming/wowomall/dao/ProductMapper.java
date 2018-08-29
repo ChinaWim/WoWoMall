@@ -2,6 +2,8 @@ package com.ming.wowomall.dao;
 
 import com.ming.wowomall.pojo.Product;
 
+import java.util.List;
+
 public interface ProductMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface ProductMapper {
     int updateByPrimaryKeySelective(Product record);
 
     int updateByPrimaryKey(Product record);
+
+    List<Product> listByCategoryId(Integer categoryId);
+
 }

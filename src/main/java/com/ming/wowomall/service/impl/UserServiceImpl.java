@@ -25,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<User> login(String username, String password) {
+        if (!StringUtils.isNoneBlank(username,password)) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
+        }
         ServerResponse response = this.checkValid(username, Const.USERNAME);
         if (response.isSuccess()) {
             return ServerResponse.createByErrorMessage("用户不存在");
@@ -57,7 +60,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse forgetGetQuestion(String username) {
+    public ServerResponse<String> forgetGetQuestion(String username) {
+        if (!StringUtils.isNoneBlank(username)) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
+        }
         ServerResponse response = this.checkValid(username, Const.USERNAME);
         if (response.isSuccess()) {
             return ServerResponse.createByErrorMessage("用户不存在");
@@ -70,7 +76,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse forgetCheckAnswer(String username, String question, String answer) {
+    public ServerResponse<String> forgetCheckAnswer(String username, String question, String answer) {
+        if (!StringUtils.isNoneBlank(username,question,answer)) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
+        }
         int resultCount = userMapper.checkAnswer(username, question, answer);
         if(resultCount == 0){
             return ServerResponse.createBySuccessMessage("问题答案错误");
@@ -82,8 +91,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse forgetResetPassword(String username, String passwordNew, String forgetToken) {
-        if (StringUtils.isBlank(forgetToken)) {
-            return ServerResponse.createByErrorMessage("forgetToken参数需要传递");
+        if (!StringUtils.isNoneBlank(username,passwordNew,forgetToken)) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
         }
         User originUser = userMapper.getByUsername(username);
         if (originUser == null) {
@@ -104,20 +113,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse resetPassword(String passwordOld, String passwordNew,Integer userId) {
-        User originalUser = userMapper.selectByPrimaryKey(userId);
-
-        if(!MD5Util.MD5EncodeUtf8(passwordOld).equals(originalUser.getPassword())){
+        if (!StringUtils.isNoneBlank(passwordOld,passwordNew) || userId == null) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
+        }
+        User originUser = userMapper.selectByPrimaryKey(userId);
+        if(!MD5Util.MD5EncodeUtf8(passwordOld).equals(originUser.getPassword())){
             return ServerResponse.createByErrorMessage("旧密码输入错误");
         }
-        originalUser.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
-        int effectRow = userMapper.updateByPrimaryKeySelective(originalUser);
+        originUser.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        int effectRow = userMapper.updateByPrimaryKeySelective(originUser);
         return effectRow > 0 ?  ServerResponse.createBySuccessMessage("修改密码成功") :
                 ServerResponse.createByErrorMessage("修改密码失败");
 
     }
 
     @Override
-    public ServerResponse updateInformation(User user) {
+    public ServerResponse<User> updateInformation(User user) {
         if (StringUtils.isNoneBlank(user.getEmail())) {
             int resultCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
             if(resultCount > 0){
@@ -134,7 +145,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ServerResponse getInformation(Integer userId) {
+    public ServerResponse<User> getInformation(Integer userId) {
+        if (userId == null) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
+        }
         User originUser = userMapper.selectByPrimaryKey(userId);
         originUser.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(originUser);
@@ -143,8 +157,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse checkValid(String str, String type) {
-        if (StringUtils.isBlank(type)) {
-            return ServerResponse.createByErrorMessage("参数错误");
+        if (StringUtils.isNoneBlank(str,type)) {
+            return ServerResponse.createByErrorMessage("传递参数错误");
         }
         int resultCount = 0;
         if (type.equals(Const.USERNAME)){
@@ -154,6 +168,14 @@ public class UserServiceImpl implements UserService {
         }
         return resultCount == 0 ?  ServerResponse.createBySuccessMessage("校验成功") :
                 ServerResponse.createByErrorMessage(type+"已存在");
+    }
+
+    @Override
+    public ServerResponse checkRoleAdmin(User user){
+        if (Const.Role.ROLE_ADMIN == user.getRole()) {
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 
 }
