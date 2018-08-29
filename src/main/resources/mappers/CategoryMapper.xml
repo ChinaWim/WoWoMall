@@ -25,15 +25,13 @@
     delete from wowomall_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.Category" >
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.Category" >
     insert into wowomall_category (id, parent_id, name, 
-      status, sort_order, create_time, 
-      update_time)
+      status, sort_order)
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{status,jdbcType=BIT}, #{sortOrder,jdbcType=INTEGER}, now(),
-      now())
+      #{status,jdbcType=BIT}, #{sortOrder,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.Category" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.Category" >
     insert into wowomall_category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -75,10 +73,10 @@
         #{sortOrder,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -101,7 +99,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -111,9 +109,7 @@
     set parent_id = #{parentId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       status = #{status,jdbcType=BIT},
-      sort_order = #{sortOrder,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      sort_order = #{sortOrder,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

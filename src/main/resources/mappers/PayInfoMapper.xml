@@ -9,12 +9,12 @@
       <arg column="pay_platform" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="platform_number" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="platform_status" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="crement_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, order_no, pay_platform, platform_number, platform_status, crement_time, 
+    id, user_id, order_no, pay_platform, platform_number, platform_status, create_time, 
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -27,15 +27,13 @@
     delete from wowomall_pay_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.PayInfo" >
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.PayInfo" >
     insert into wowomall_pay_info (id, user_id, order_no, 
-      pay_platform, platform_number, platform_status, 
-      crement_time, update_time)
+      pay_platform, platform_number, platform_status)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, 
-      #{payPlatform,jdbcType=INTEGER}, #{platformNumber,jdbcType=VARCHAR}, #{platformStatus,jdbcType=VARCHAR}, 
-      now(), now())
+      #{payPlatform,jdbcType=INTEGER}, #{platformNumber,jdbcType=VARCHAR}, #{platformStatus,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.PayInfo" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.PayInfo" >
     insert into wowomall_pay_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -56,8 +54,8 @@
       <if test="platformStatus != null" >
         platform_status,
       </if>
-      <if test="crementTime != null" >
-        crement_time,
+      <if test="createTime != null" >
+        create_time,
       </if>
       <if test="updateTime != null" >
         update_time,
@@ -82,11 +80,11 @@
       <if test="platformStatus != null" >
         #{platformStatus,jdbcType=VARCHAR},
       </if>
-      <if test="crementTime != null" >
-        now(),
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -108,11 +106,11 @@
       <if test="platformStatus != null" >
         platform_status = #{platformStatus,jdbcType=VARCHAR},
       </if>
-      <if test="crementTime != null" >
-        crement_time = #{crementTime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -123,9 +121,7 @@
       order_no = #{orderNo,jdbcType=BIGINT},
       pay_platform = #{payPlatform,jdbcType=INTEGER},
       platform_number = #{platformNumber,jdbcType=VARCHAR},
-      platform_status = #{platformStatus,jdbcType=VARCHAR},
-      crement_time = #{crementTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      platform_status = #{platformStatus,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

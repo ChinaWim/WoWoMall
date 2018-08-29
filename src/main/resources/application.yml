@@ -1,30 +1,23 @@
+#==================== Tomcat Setting =====================#
 server:
   servlet:
     context-path: /
   tomcat:
     uri-encoding: UTF-8
-  port: 8080
-
+  port: 8081
+#==================== spring Setting =====================#
 spring:
   datasource:
     druid:
       username: root
-      password: m969130721
+      password: 47218382
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://118.89.50.153:3306/wowomall?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      url: jdbc:mysql://localhost:3306/wowomall?useUnicode=true&characterEncoding=UTF-8&useSSL=false
       max-active: 50
       min-idle: 10
       initial-size: 10
       max-wait: 10
       default-auto-commit: true
-  thymeleaf:
-    servlet:
-      content-type: text/html
-    encoding: UTF-8
-    mode: HTML5
-    suffix: .html
-    prefix: classpath:templates/
-    cache: false
   mvc:
     view:
       suffix: .html
@@ -36,7 +29,17 @@ spring:
   http:
     encoding:
       charset: UTF-8
+#==================== thymeleaf Setting =====================#
+  thymeleaf:
+    servlet:
+      content-type: text/html
+    encoding: UTF-8
+    mode: HTML5
+    suffix: .html
+    prefix: classpath:templates/
+    cache: false
 
+#==================== mybatis Setting =====================#
 mybatis:
   config-location: classpath:mybatis.config.xml
   mapper-locations: classpath:mappers/*.xml
@@ -47,5 +50,11 @@ pagehelper:
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql
+
+#==================== logging Setting =====================#
 logging:
   config: classpath:logback.xml
+
+#==================== project Setting =====================#
+project:
+  isDebug: true

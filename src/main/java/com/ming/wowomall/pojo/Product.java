@@ -6,7 +6,7 @@ import java.util.Date;
 public class Product {
     private Integer id;
 
-    private Integer catetoryId;
+    private Integer categoryId;
 
     private String name;
 
@@ -28,9 +28,9 @@ public class Product {
 
     private Date updateTime;
 
-    public Product(Integer id, Integer catetoryId, String name, String subtile, String mainImage, String subImages, String detail, BigDecimal price, Integer stock, Integer status, Date createTime, Date updateTime) {
+    public Product(Integer id, Integer categoryId, String name, String subtile, String mainImage, String subImages, String detail, BigDecimal price, Integer stock, Integer status, Date createTime, Date updateTime) {
         this.id = id;
-        this.catetoryId = catetoryId;
+        this.categoryId = categoryId;
         this.name = name;
         this.subtile = subtile;
         this.mainImage = mainImage;
@@ -55,12 +55,12 @@ public class Product {
         this.id = id;
     }
 
-    public Integer getCatetoryId() {
-        return catetoryId;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCatetoryId(Integer catetoryId) {
-        this.catetoryId = catetoryId;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -141,23 +141,5 @@ public class Product {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", catetoryId=" + catetoryId +
-                ", name='" + name + '\'' +
-                ", subtile='" + subtile + '\'' +
-                ", mainImage='" + mainImage + '\'' +
-                ", subImages='" + subImages + '\'' +
-                ", detail='" + detail + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

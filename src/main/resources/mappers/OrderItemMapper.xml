@@ -30,17 +30,15 @@
     delete from wowomall_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.OrderItem" >
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.OrderItem" >
     insert into wowomall_order_item (id, user_id, order_no, 
       product_id, product_name, product_image, 
-      current_unit_price, quantity, total_price, 
-      create_time, update_time)
+      current_unit_price, quantity, total_price)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, 
       #{productId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{productImage,jdbcType=VARCHAR}, 
-      #{currentUnitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
-      now(), now())
+      #{currentUnitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.OrderItem" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.OrderItem" >
     insert into wowomall_order_item
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -106,10 +104,10 @@
         #{totalPrice,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -144,7 +142,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -158,9 +156,7 @@
       product_image = #{productImage,jdbcType=VARCHAR},
       current_unit_price = #{currentUnitPrice,jdbcType=DECIMAL},
       quantity = #{quantity,jdbcType=INTEGER},
-      total_price = #{totalPrice,jdbcType=DECIMAL},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      total_price = #{totalPrice,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,4 +1,4 @@
-package com.ming.wowomall.common;
+package com.ming.wowomall.config;
 
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 

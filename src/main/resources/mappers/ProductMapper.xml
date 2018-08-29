@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.ming.wowomall.pojo.Product" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="catetory_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="subtile" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="main_image" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -18,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, catetory_id, name, subtile, main_image, sub_images, detail, price, stock, status, 
+    id, category_id, name, subtile, main_image, sub_images, detail, price, stock, status, 
     create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -31,26 +31,24 @@
     delete from wowomall_product
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.Product" >
-    insert into wowomall_product (id, catetory_id, name, 
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.Product" >
+    insert into wowomall_product (id, category_id, name, 
       subtile, main_image, sub_images, 
       detail, price, stock, 
-      status, create_time, update_time
-      )
-    values (#{id,jdbcType=INTEGER}, #{catetoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      status)
+    values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{subtile,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR}, #{subImages,jdbcType=VARCHAR}, 
       #{detail,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, now(), now()
-      )
+      #{status,jdbcType=INTEGER} )
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.Product" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.Product" >
     insert into wowomall_product
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="catetoryId != null" >
-        catetory_id,
+      <if test="categoryId != null" >
+        category_id,
       </if>
       <if test="name != null" >
         name,
@@ -87,8 +85,8 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="catetoryId != null" >
-        #{catetoryId,jdbcType=INTEGER},
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -115,18 +113,18 @@
         #{status,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ming.wowomall.pojo.Product" >
     update wowomall_product
     <set >
-      <if test="catetoryId != null" >
-        catetory_id = #{catetoryId,jdbcType=INTEGER},
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
       </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
@@ -156,14 +154,14 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ming.wowomall.pojo.Product" >
     update wowomall_product
-    set catetory_id = #{catetoryId,jdbcType=INTEGER},
+    set category_id = #{categoryId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
       subtile = #{subtile,jdbcType=VARCHAR},
       main_image = #{mainImage,jdbcType=VARCHAR},
@@ -171,9 +169,7 @@
       detail = #{detail,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
       stock = #{stock,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -25,15 +25,13 @@
     delete from wowomall_cart
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.Cart" >
+  <insert id="insert"  keyProperty="id" parameterType="com.ming.wowomall.pojo.Cart" >
     insert into wowomall_cart (id, user_id, product_id, 
-      quantity, checked, create_time, 
-      update_time)
+      quantity, checked)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
-      #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER},now(),
-      now())
+      #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.Cart" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.Cart" >
     insert into wowomall_cart
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -52,10 +50,10 @@
         checked,
       </if>
       <if test="createTime != null" >
-        now(),
+        create_time,
       </if>
       <if test="updateTime != null" >
-        now(),
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -101,7 +99,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -111,9 +109,7 @@
     set user_id = #{userId,jdbcType=INTEGER},
       product_id = #{productId,jdbcType=INTEGER},
       quantity = #{quantity,jdbcType=INTEGER},
-      checked = #{checked,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      checked = #{checked,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

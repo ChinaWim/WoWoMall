@@ -15,18 +15,18 @@ public class PayInfo {
 
     private String platformStatus;
 
-    private Date crementTime;
+    private Date createTime;
 
     private Date updateTime;
 
-    public PayInfo(Integer id, Integer userId, Long orderNo, Integer payPlatform, String platformNumber, String platformStatus, Date crementTime, Date updateTime) {
+    public PayInfo(Integer id, Integer userId, Long orderNo, Integer payPlatform, String platformNumber, String platformStatus, Date createTime, Date updateTime) {
         this.id = id;
         this.userId = userId;
         this.orderNo = orderNo;
         this.payPlatform = payPlatform;
         this.platformNumber = platformNumber;
         this.platformStatus = platformStatus;
-        this.crementTime = crementTime;
+        this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
@@ -82,12 +82,12 @@ public class PayInfo {
         this.platformStatus = platformStatus == null ? null : platformStatus.trim();
     }
 
-    public Date getCrementTime() {
-        return crementTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCrementTime(Date crementTime) {
-        this.crementTime = crementTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {
@@ -96,19 +96,5 @@ public class PayInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "PayInfo{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", orderNo=" + orderNo +
-                ", payPlatform=" + payPlatform +
-                ", platformNumber='" + platformNumber + '\'' +
-                ", platformStatus='" + platformStatus + '\'' +
-                ", crementTime=" + crementTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

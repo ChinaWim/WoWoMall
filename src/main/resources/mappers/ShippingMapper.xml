@@ -31,19 +31,17 @@
     delete from wowomall_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.Shipping" >
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.Shipping" >
     insert into wowomall_shipping (id, user_id, receiver_name, 
       receiver_phone, receiver_mobile, receiver_province, 
       receiver_city, receiver_district, receiver_address, 
-      receiver_zip, create_time, update_time
-      )
+      receiver_zip)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
       #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
       #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
-      #{receiverZip,jdbcType=VARCHAR}, now(), now()
-      )
+      #{receiverZip,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.Shipping" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.Shipping" >
     insert into wowomall_shipping
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -115,10 +113,10 @@
         #{receiverZip,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -156,7 +154,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -171,9 +169,7 @@
       receiver_city = #{receiverCity,jdbcType=VARCHAR},
       receiver_district = #{receiverDistrict,jdbcType=VARCHAR},
       receiver_address = #{receiverAddress,jdbcType=VARCHAR},
-      receiver_zip = #{receiverZip,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      receiver_zip = #{receiverZip,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -27,24 +27,54 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="listAll" resultType="com.ming.wowomall.pojo.User">
-    select * from  wowomall_user
+  <select id="checkValid" parameterType="map" resultType="java.lang.Integer">
+    select count(*) from wowomall_user
+    where  #{type} = #{str}
   </select>
+  <select id="checkUsername" resultType="java.lang.Integer" parameterType="map">
+    select count(*) from wowomall_user
+    where username = #{username}
+  </select>
+  <select id="checkEmail" resultType="java.lang.Integer">
+    select count(*) from wowomall_user
+    where email = #{email}
+  </select>
+
+  <select id="getByLogin" parameterType="map" resultType="com.ming.wowomall.pojo.User">
+    select <include refid="Base_Column_List"/> from wowomall_user
+    where username = #{username} and password = #{password}
+  </select>
+  <select id="getQuestionByUsername" resultType="java.lang.String" parameterType="map">
+    select question from wowomall_user
+    where username = #{username}
+  </select>
+  <select id="checkAnswer" parameterType="map" resultType="java.lang.Integer">
+    select count(*) from wowomall_user
+    where username = #{username} and question = #{question} and answer = #{answer}
+  </select>
+  <select id="getByUsername" parameterType="map" resultType="com.ming.wowomall.pojo.User">
+    select <include refid="Base_Column_List"/> from wowomall_user
+    where username = #{username}
+  </select>
+  <select id="checkEmailByUserId" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from wowomall_user
+    where email = #{email}
+    and id != #{userId}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.User" >
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.User" >
     insert into wowomall_user (id, username, password, 
       email, phone, question, 
-      answer, role, status, create_time, 
-      update_time)
+      answer, role, status)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{status,jdbcType=BIT},now(),
-      now())
+      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{status,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.User" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.User" >
     insert into wowomall_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -110,10 +140,10 @@
         #{status,jdbcType=BIT},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -148,7 +178,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -162,9 +192,7 @@
       question = #{question,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
-      status = #{status,jdbcType=BIT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      status = #{status,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

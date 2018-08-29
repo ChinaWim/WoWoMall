@@ -32,19 +32,17 @@
     delete from wowomall_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ming.wowomall.pojo.Order" >
+  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.Order" >
     insert into wowomall_order (id, order_no, user_id, 
       shipping_id, payment_type, postage, 
       status, payment_time, send_time, 
-      end_time, close_time, create_time, 
-      update_time)
+      end_time, close_time)
     values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, 
       #{shippingId,jdbcType=INTEGER}, #{paymentType,jdbcType=INTEGER}, #{postage,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP},now(),
-      now())
+      #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.Order" >
+  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.Order" >
     insert into wowomall_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -122,10 +120,10 @@
         #{closeTime,jdbcType=TIMESTAMP},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -166,7 +164,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        update_time = now(),
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -182,9 +180,7 @@
       payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       send_time = #{sendTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},
-      close_time = #{closeTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+      close_time = #{closeTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
