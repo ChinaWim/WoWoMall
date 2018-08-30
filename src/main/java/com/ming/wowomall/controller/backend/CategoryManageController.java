@@ -37,7 +37,7 @@ public class CategoryManageController {
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
         }
-        return categoryService.getChildrenParallelCategory(categoryId);
+        return categoryService.getChildrenParallelCategoryById(categoryId);
     }
 
 
@@ -50,7 +50,7 @@ public class CategoryManageController {
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
         }
-        return categoryService.addCategory(parentId,categoryName);
+        return categoryService.insertCategory(parentId,categoryName);
     }
 
 
@@ -75,7 +75,7 @@ public class CategoryManageController {
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
         }
-        return categoryService.getDeepCategory(categoryId);
+        return categoryService.getChildrenAndChildrenIdsById(categoryId);
     }
 
 

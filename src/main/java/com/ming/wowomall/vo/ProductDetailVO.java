@@ -1,12 +1,19 @@
-package com.ming.wowomall.pojo;
+package com.ming.wowomall.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Product {
+/**
+ * @author m969130721@163.com
+ * @date 18-8-30 下午1:25
+ */
+public class ProductDetailVO implements Serializable {
     private Integer id;
 
     private Integer categoryId;
+
+    private Integer parentCategoryId;
 
     private String name;
 
@@ -24,28 +31,11 @@ public class Product {
 
     private Integer status;
 
-    private Date createTime;
+    private String createTime;
 
-    private Date updateTime;
+    private String updateTime;
 
-    public Product(Integer id, Integer categoryId, String name, String subtitle, String mainImage, String subImages, String detail, BigDecimal price, Integer stock, Integer status, Date createTime, Date updateTime) {
-        this.id = id;
-        this.categoryId = categoryId;
-        this.name = name;
-        this.subtitle = subtitle;
-        this.mainImage = mainImage;
-        this.subImages = subImages;
-        this.detail = detail;
-        this.price = price;
-        this.stock = stock;
-        this.status = status;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-    }
-
-    public Product() {
-        super();
-    }
+    private String imageHost;
 
     public Integer getId() {
         return id;
@@ -63,12 +53,20 @@ public class Product {
         this.categoryId = categoryId;
     }
 
+    public Integer getParentCategoryId() {
+        return parentCategoryId;
+    }
+
+    public void setParentCategoryId(Integer parentCategoryId) {
+        this.parentCategoryId = parentCategoryId;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getSubtitle() {
@@ -76,7 +74,7 @@ public class Product {
     }
 
     public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle == null ? null : subtitle.trim();
+        this.subtitle = subtitle;
     }
 
     public String getMainImage() {
@@ -84,7 +82,7 @@ public class Product {
     }
 
     public void setMainImage(String mainImage) {
-        this.mainImage = mainImage == null ? null : mainImage.trim();
+        this.mainImage = mainImage;
     }
 
     public String getSubImages() {
@@ -92,7 +90,7 @@ public class Product {
     }
 
     public void setSubImages(String subImages) {
-        this.subImages = subImages == null ? null : subImages.trim();
+        this.subImages = subImages;
     }
 
     public String getDetail() {
@@ -100,7 +98,7 @@ public class Product {
     }
 
     public void setDetail(String detail) {
-        this.detail = detail == null ? null : detail.trim();
+        this.detail = detail;
     }
 
     public BigDecimal getPrice() {
@@ -127,19 +125,47 @@ public class Product {
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getImageHost() {
+        return imageHost;
+    }
+
+    public void setImageHost(String imageHost) {
+        this.imageHost = imageHost;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDetailVO{" +
+                "id=" + id +
+                ", categoryId=" + categoryId +
+                ", parentCategoryId=" + parentCategoryId +
+                ", name='" + name + '\'' +
+                ", subtitle='" + subtitle + '\'' +
+                ", mainImage='" + mainImage + '\'' +
+                ", subImages='" + subImages + '\'' +
+                ", detail='" + detail + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", status=" + status +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", imageHost='" + imageHost + '\'' +
+                '}';
     }
 }

@@ -22,6 +22,6 @@ public interface CategoryMapper {
 
     List<Integer> listChildrenIdByParentId(Integer parentId);
 
-    int addBatch(@Param("categoryList") List<Category> categoryList);
+    int insertBatch(@Param("categoryList") List<Category> categoryList);
 
 }

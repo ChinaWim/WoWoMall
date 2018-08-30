@@ -88,7 +88,7 @@
             </if>
         </trim>
     </insert>
-    <insert id="addBatch" parameterType="map">
+    <insert id="insertBatch" parameterType="map">
         insert into wowomall_category (parent_id,name) values
         <foreach collection="categoryList" item="category" separator=",">
             (#{category.parentId},#{category.name})

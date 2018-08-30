@@ -7,14 +7,14 @@ import java.util.Date;
 /**
  * @author m969130721@163.com
  * @date 18-6-20 下午4:39
+ * java8日期时间工具
  */
 public class DateUtil {
-    public static final String DEFAULT_DATE_FORMATTER = "yyyy-MM-dd HH:ss:mm";
+    public static final String DATETIME_FORMATTER = "yyyy-MM-dd HH:ss:mm";
 
-    public static final String DATE_FORMATTER = "yyyyMMdd";
+    public static final String DATE_FORMATTER = "yyyy-MM-dd";
 
-    public static final String CHINA_DATE_FORMATTER = "yyyy年MM月dd日 HH:mm:ss";
-
+    public static final String CHINA_DATETIME_FORMATTER = "yyyy年MM月dd日 HH:mm:ss";
 
     /**
      * 获取当前日期时间字符串
@@ -24,7 +24,7 @@ public class DateUtil {
     public static String getCurrentDateTimeAsString(DateTimeFormatter formatter){
         LocalDateTime currentDateTime = LocalDateTime.now();
         if (null == formatter) {
-            formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMATTER);
+            formatter = DateTimeFormatter.ofPattern(DATETIME_FORMATTER);
         }
         return currentDateTime.format(formatter);
     }
@@ -49,7 +49,7 @@ public class DateUtil {
     public static LocalDateTime getCurrentLocalDateTime(DateTimeFormatter formatter){
         String text = getCurrentDateTimeAsString(null);
         if (null == formatter){
-            formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMATTER);
+            formatter = DateTimeFormatter.ofPattern(DATETIME_FORMATTER);
         }
         return LocalDateTime.parse(text,formatter);
     }
@@ -131,11 +131,6 @@ public class DateUtil {
     public static Long getDifferMin(Date before,Date after){
         Duration duration = Duration.between(after.toInstant(),before.toInstant());
         return duration.toMinutes();
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-
-
     }
 
 

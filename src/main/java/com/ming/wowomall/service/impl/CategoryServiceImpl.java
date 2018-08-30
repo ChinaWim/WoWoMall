@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId) {
+    public ServerResponse<List<Category>> getChildrenParallelCategoryById(Integer categoryId) {
         if (categoryId == null) {
             return ServerResponse.createByErrorMessage("传递参数错误");
         }
@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ServerResponse addCategory(Integer parentId,String categoryName) {
+    public ServerResponse insertCategory(Integer parentId,String categoryName) {
         if (parentId == null || !StringUtils.isNoneBlank(categoryName)) {
             return ServerResponse.createByErrorMessage("传递参数错误");
         }
@@ -75,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public ServerResponse<List<Integer>> getDeepCategory(Integer categoryId) {
+    public ServerResponse<List<Integer>> getChildrenAndChildrenIdsById(Integer categoryId) {
         if (categoryId == null) {
             return ServerResponse.createByErrorMessage("传递参数错误");
         }

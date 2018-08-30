@@ -10,9 +10,9 @@ import java.util.List;
  * @date 18-8-29 下午2:53
  */
 public interface CategoryService {
-    ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId);
+    ServerResponse<List<Category>> getChildrenParallelCategoryById(Integer categoryId);
 
-    ServerResponse addCategory(Integer parentId,String categoryName);
+    ServerResponse insertCategory(Integer parentId,String categoryName);
 
     ServerResponse updateCategoryName(Integer categoryId, String categoryName);
 
@@ -21,7 +21,7 @@ public interface CategoryService {
      * @param categoryId
      * @return
      */
-    ServerResponse<List<Integer>> getDeepCategory(Integer categoryId);
+    ServerResponse<List<Integer>> getChildrenAndChildrenIdsById(Integer categoryId);
 
 
 }

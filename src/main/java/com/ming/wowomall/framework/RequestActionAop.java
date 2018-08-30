@@ -10,7 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**
@@ -35,12 +39,18 @@ public class RequestActionAop {
 
     @Around("execution(* com.ming.wowomall.controller.*.*.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        logger.info("请求IP:"+request.getRemoteHost());
         Class<?> clazz = point.getTarget().getClass();
         Logger log = LoggerFactory.getLogger(clazz);
         if (isDebug) {
             MethodSignature ms = (MethodSignature) point.getSignature();
             Method method = clazz.getMethod(ms.getName(), ms.getParameterTypes());
-            log.info("是否是ResponseBody:"+(method.getAnnotation((ResponseBody.class)) == null ? "否":"是"));
+            if (clazz.getAnnotation(RestController.class) != null || method.getAnnotation(ResponseBody.class) != null) {
+                log.info("是否是ResponseBody:是");
+            } else {
+                log.info("是否是ResponseBody:否");
+            }
             log.info("执行类:"+clazz.getName());
             log.info("方法:"+method.getName());
         }
@@ -51,7 +61,7 @@ public class RequestActionAop {
             }else {
                 log.info("返回值:"+returnValue);
             }
-            log.info("**********************************************************************************************");
+            log.info("*********************************************************************************************");
         }
             return returnValue;
     }
