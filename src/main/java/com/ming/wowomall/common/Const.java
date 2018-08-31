@@ -27,9 +27,13 @@ public class Const {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");
     }
 
-    public interface CartProductStatus{
+    public interface Cart{
         int CHECKED = 1;
         int UN_CHECKED = 0;
+
+        String LIMI_NUM_FAIL = "LIMI_NUM_FAIL";
+
+        String LIMI_NUM_SUCCESS = "LIMI_NUM_SUCCESS";
     }
 
 

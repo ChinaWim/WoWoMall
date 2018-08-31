@@ -2,13 +2,17 @@ package com.ming.wowomall.service.impl;
 
 import com.google.common.collect.Maps;
 import com.ming.wowomall.common.Const;
+import com.ming.wowomall.common.ResponseCode;
 import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.dao.CartMapper;
 import com.ming.wowomall.dao.ProductMapper;
 import com.ming.wowomall.pojo.Cart;
 import com.ming.wowomall.pojo.Product;
 import com.ming.wowomall.service.CartService;
-import com.ming.wowomall.vo.CartProductListVO;
+import com.ming.wowomall.util.BigDecimalUtil;
+import com.ming.wowomall.util.PropertiesUtil;
+import com.ming.wowomall.vo.CartProductVO;
+import com.ming.wowomall.vo.CartVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,40 +35,23 @@ public class CartServiceImpl implements CartService {
     private ProductMapper productMapper;
 
     @Override
-    public ServerResponse<Map> listCartVOByUserId(Integer userId) {
-        List<CartProductListVO> cartProductListVOList = cartMapper.listCartVOByUserId(userId);
-        boolean allChecked = true;
-        BigDecimal cartTotalPrice = new BigDecimal(0);
-        for (CartProductListVO cartVO : cartProductListVOList) {
-            if(cartVO.getProductChecked() == Const.CartProductStatus.UN_CHECKED){
-                allChecked = false;
-            }
-            if (cartVO.getQuantity() > cartVO.getProductStock()){
-                cartVO.setLimitQuantity("LIMIT_NUM_FAIL");
-            } else {
-                cartVO.setLimitQuantity("LIMIT_NUM_SUCCESS");
-            }
-            BigDecimal cartProductStock = new BigDecimal(cartVO.getQuantity());
-            BigDecimal productTotalPrice = cartVO.getProductPrice().multiply(cartProductStock);
-            productTotalPrice.setScale(2,BigDecimal.ROUND_HALF_UP);
-            cartVO.setProductTotalPrice(productTotalPrice);
-            if (cartVO.getProductChecked() == Const.CartProductStatus.CHECKED) {
-                cartTotalPrice = cartTotalPrice.add(productTotalPrice);
-            }
+    public ServerResponse<CartVO> list(Integer userId){
+        if (userId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
-        cartTotalPrice.setScale(2,BigDecimal.ROUND_HALF_UP);
-        Map<String,Object> resultMap = Maps.newHashMap();
-        resultMap.put("cartProductVoList",cartProductListVOList);
-        resultMap.put("allChecked",allChecked);
-        resultMap.put("cartTotalPrice",cartTotalPrice);
-        return ServerResponse.createBySuccess(resultMap);
-
+        CartVO cartVO = this.getCartVOByUserId(userId);
+        return ServerResponse.createBySuccess(cartVO);
     }
 
+
     @Override
-    public ServerResponse insertOrUpdateCart(Integer userId,Integer productId, Integer count) {
+    public ServerResponse insertCart(Integer userId,Integer productId, Integer count) {
+        if (userId == null || productId == null || count == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+
         Product product = productMapper.selectByPrimaryKey(productId);
-        if (product != null && !Const.ProductStatusEnum.ON_SALE.getCode().equals(product.getStatus())){
+        if (product == null || !Const.ProductStatusEnum.ON_SALE.getCode().equals(product.getStatus())){
             return ServerResponse.createByErrorMessage("商品下架或已删除");
         }
         List<Cart> cartList = cartMapper.getCartByUserIdWithProductId(userId, productId);
@@ -72,7 +59,6 @@ public class CartServiceImpl implements CartService {
             Cart cart = cartList.get(0);
             cart.setQuantity(cart.getQuantity() + count);
             cartMapper.updateByPrimaryKeySelective(cart);
-
         }else {
             Cart cart = new Cart();
             cart.setUserId(userId);
@@ -80,33 +66,111 @@ public class CartServiceImpl implements CartService {
             cart.setQuantity(count);
             cartMapper.insertSelective(cart);
         }
-        return this.listCartVOByUserId(userId);
+        CartVO cartVO = this.getCartVOByUserId(userId);
+        return ServerResponse.createBySuccess(cartVO);
     }
+
+
+
+
+    @Override
+    public ServerResponse updateCart(Integer userId,Integer productId, Integer count) {
+        if (userId == null || productId == null || count == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product == null || !Const.ProductStatusEnum.ON_SALE.getCode().equals(product.getStatus())){
+            return ServerResponse.createByErrorMessage("商品下架或已删除");
+        }
+        cartMapper.updateByUserIdWithProductId(userId,productId,count);
+
+        CartVO cartVO = this.getCartVOByUserId(userId);
+        return ServerResponse.createBySuccess(cartVO);
+    }
+
 
     @Override
     public ServerResponse deleteByProductIdsWithUserId(Integer userId,List<String> productIdList) {
-        //todo
+        if (userId == null || CollectionUtils.isEmpty(productIdList)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
         cartMapper.deleteByProductIdsWithUserId(userId,productIdList.size() == 0 ? null : productIdList);
 
-        return this.listCartVOByUserId(userId);
+        CartVO cartVO = this.getCartVOByUserId(userId);
+        return ServerResponse.createBySuccess(cartVO);
     }
 
     @Override
-    public ServerResponse<Map> updateProductCheckedStatus(Integer userId,Integer productId,Integer status) {
-        cartMapper.updateProductStatusByUserIdWithProductId(userId, productId, status);
-        return this.listCartVOByUserId(userId);
+    public ServerResponse<CartVO> updateProductCheckedOrUnChecked(Integer userId,Integer productId,Integer checked) {
+        if (userId == null || productId == null || checked == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        cartMapper.updateProductCheckedOrUnChecked(userId, productId, checked);
+        CartVO cartVO = this.getCartVOByUserId(userId);
+        return ServerResponse.createBySuccess(cartVO);
     }
 
     @Override
     public ServerResponse<Integer> countCartProductByUserId(Integer userId) {
+        if (userId == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
         int count = cartMapper.countCartProductByUserId(userId);
         return ServerResponse.createBySuccess(count);
     }
 
     @Override
-    public ServerResponse<Map> updateSelectAllProductByUserId(Integer userId,Integer status) {
-        cartMapper.updateAllProductStatusByUserId(userId, status);
-        return this.listCartVOByUserId(userId);
+    public ServerResponse<CartVO> updateAllProductCheckedOrUnChecked(Integer userId,Integer checked) {
+        if (userId == null || checked == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        cartMapper.updateAllProductCheckedOrUnChecked(userId, checked);
+        CartVO cartVO = this.getCartVOByUserId(userId);
+        return ServerResponse.createBySuccess(cartVO);
+    }
+
+
+    private CartVO getCartVOByUserId(Integer userId) {
+        CartVO cartVO = new CartVO();
+
+        List<CartProductVO> cartProductVOList = cartMapper.listCartVOByUserId(userId);
+        boolean allChecked = true;
+        BigDecimal cartTotalPrice = new BigDecimal("0");
+
+        for (CartProductVO cartProductVO : cartProductVOList) {
+            if(cartProductVO.getProductChecked() == Const.Cart.UN_CHECKED){
+                allChecked = false;
+            }
+            //判断库存
+            int buyLimitCount = 0;
+            if (cartProductVO.getQuantity() > cartProductVO.getProductStock()){
+                cartProductVO.setLimitQuantity(Const.Cart.LIMI_NUM_FAIL);
+                //防止库存溢出
+                buyLimitCount = cartProductVO.getProductStock();
+                Cart cartForQuantity = new Cart();
+                cartForQuantity.setId(cartProductVO.getId());
+                cartForQuantity.setQuantity(buyLimitCount);
+                cartMapper.updateByPrimaryKeySelective(cartForQuantity);
+            } else {
+                buyLimitCount = cartProductVO.getQuantity();
+                cartProductVO.setLimitQuantity(Const.Cart.LIMI_NUM_SUCCESS);
+            }
+            cartProductVO.setQuantity(buyLimitCount);
+            //计算商品总价
+            BigDecimal productTotalPrice = BigDecimalUtil.multiply(cartProductVO.getProductPrice().doubleValue(),buyLimitCount);
+            cartProductVO.setProductTotalPrice(productTotalPrice);
+
+            if (Const.Cart.CHECKED == cartProductVO.getProductChecked()) {
+                cartTotalPrice = BigDecimalUtil.add(cartTotalPrice.doubleValue(),cartProductVO.getProductTotalPrice().doubleValue());
+            }
+        }
+
+        cartVO.setCartProductVoList(cartProductVOList);
+        cartVO.setCartTotalPrice(cartTotalPrice);
+        cartVO.setAllChecked(allChecked);
+        cartVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/"));
+        return cartVO;
     }
 
 }

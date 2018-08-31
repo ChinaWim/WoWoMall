@@ -21,7 +21,7 @@
     from wowomall_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="listCartVOByUserId" resultType="com.ming.wowomall.vo.CartProductListVO">
+    <select id="listCartVOByUserId" resultType="com.ming.wowomall.vo.CartProductVO">
       select c.id,c.user_id,c.product_id,c.quantity,p.name productName,p.subtitle productSubtitle,p.main_image productMainImage,
       p.price productPrice,p.status productStatus,p.stock productStock,c.checked productChecked
       from wowomall_cart c
@@ -33,7 +33,7 @@
     and product_id = #{productId}
   </select>
   <select id="countCartProductByUserId" resultType="java.lang.Integer">
-    select count(*) from wowomall_cart
+    select IFNULL(sum(quantity),0) from wowomall_cart
     where user_id = #{userId}
 
   </select>
@@ -140,15 +140,21 @@
       checked = #{checked,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateProductStatusByUserIdWithProductId" parameterType="map">
+  <update id="updateProductCheckedOrUnChecked" parameterType="map">
     update wowomall_cart
-    set checked = #{status}
+    set checked = #{checked}
     where user_id = #{userId}
     and product_id = #{productId}
   </update>
-  <update id="updateAllProductStatusByUserId" parameterType="map">
+  <update id="updateAllProductCheckedOrUnChecked" parameterType="map">
       update wowomall_cart
-      set checked = #{status}
+      set checked = #{checked}
       where user_id = #{userId}
+  </update>
+  <update id="updateByUserIdWithProductId" parameterType="map">
+    update wowomall_cart
+      set quantity = #{count}
+      where user_id = #{userId}
+      and product_id = #{productId}
   </update>
 </mapper>

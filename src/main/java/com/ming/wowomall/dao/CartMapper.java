@@ -1,7 +1,7 @@
 package com.ming.wowomall.dao;
 
 import com.ming.wowomall.pojo.Cart;
-import com.ming.wowomall.vo.CartProductListVO;
+import com.ming.wowomall.vo.CartProductVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,16 +19,17 @@ public interface CartMapper {
 
     int updateByPrimaryKey(Cart record);
 
-    List<CartProductListVO> listCartVOByUserId(Integer userId);
+    List<CartProductVO> listCartVOByUserId(Integer userId);
 
     List<Cart> getCartByUserIdWithProductId(@Param("userId") Integer userId, @Param("productId") Integer productId);
 
     int deleteByProductIdsWithUserId(@Param("userId") Integer userId,@Param("productIdList") List<String> productIdList);
 
-    int updateProductStatusByUserIdWithProductId(@Param("userId")Integer userId,@Param("productId") Integer productId,@Param("status") int status);
+    int updateProductCheckedOrUnChecked(@Param("userId")Integer userId,@Param("productId") Integer productId,@Param("checked") int checked);
 
     int countCartProductByUserId(Integer userId);
 
-    int updateAllProductStatusByUserId(@Param("userId")Integer userId,@Param("status") int status);
+    int updateAllProductCheckedOrUnChecked(@Param("userId")Integer userId,@Param("checked") int checked);
 
+    int updateByUserIdWithProductId(@Param("userId")Integer userId, @Param("productId")Integer productId,@Param("count") Integer count);
 }

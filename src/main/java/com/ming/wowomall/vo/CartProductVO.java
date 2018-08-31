@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @author m969130721@163.com
  * @date 18-8-31 下午2:35
  */
-public class CartProductListVO implements Serializable {
+public class CartProductVO implements Serializable {
 
     private Integer id;
 
@@ -34,7 +34,9 @@ public class CartProductListVO implements Serializable {
     private Integer productStock;
 
     private Integer productChecked;
-
+    /**
+     * 判断购物车商品数量与库存数量
+     */
     private String limitQuantity;
 
     public Integer getId() {
@@ -143,7 +145,7 @@ public class CartProductListVO implements Serializable {
 
     @Override
     public String toString() {
-        return "CartProductListVO{" +
+        return "CartProductVO{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", productId=" + productId +
