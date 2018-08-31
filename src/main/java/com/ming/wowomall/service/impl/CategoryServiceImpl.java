@@ -79,12 +79,11 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryId == null) {
             return ServerResponse.createByErrorMessage("传递参数错误");
         }
-        if (categoryMapper.selectByPrimaryKey(categoryId) == null) {
+        if (categoryMapper.checkCategoryId(categoryId) == 0) {
             return ServerResponse.createByErrorMessage("找不到该品类");
         }
-        Set<Integer> categoryIdsSet = Sets.newHashSet();
+        Set<Integer> categoryIdsSet = Sets.newHashSet(categoryId);
         this.setDeepCategoryIds(categoryIdsSet,categoryId);
-        categoryIdsSet.add(categoryId);
         List<Integer> categoryIdsList = new ArrayList<>(categoryIdsSet);
         return  ServerResponse.createBySuccess(categoryIdsList);
     }

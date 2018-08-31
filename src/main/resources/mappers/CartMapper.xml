@@ -21,9 +21,37 @@
     from wowomall_cart
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="listCartVOByUserId" resultType="com.ming.wowomall.vo.CartProductListVO">
+      select c.id,c.user_id,c.product_id,c.quantity,p.name productName,p.subtitle productSubtitle,p.main_image productMainImage,
+      p.price productPrice,p.status productStatus,p.stock productStock,c.checked productChecked
+      from wowomall_cart c
+      join wowomall_product p on c.product_id = p.id and p.status = 1
+    </select>
+  <select id="getCartByUserIdWithProductId" parameterType="map" resultType="com.ming.wowomall.pojo.Cart">
+    select <include refid="Base_Column_List"/> from wowomall_cart
+    where user_id = #{userId}
+    and product_id = #{productId}
+  </select>
+  <select id="countCartProductByUserId" resultType="java.lang.Integer">
+    select count(*) from wowomall_cart
+    where user_id = #{userId}
+
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_cart
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByProductIdsWithUserId" parameterType="map">
+    delete from wowomall_cart
+    <where>
+      <if test="productIdList != null">
+        product_id in
+        <foreach collection="productIdList" open="(" close=")" separator="," item="id">
+          #{id}
+        </foreach>
+      </if>
+      and user_id = #{userId}
+    </where>
   </delete>
   <insert id="insert"  keyProperty="id" parameterType="com.ming.wowomall.pojo.Cart" >
     insert into wowomall_cart (id, user_id, product_id, 
@@ -111,5 +139,16 @@
       quantity = #{quantity,jdbcType=INTEGER},
       checked = #{checked,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateProductStatusByUserIdWithProductId" parameterType="map">
+    update wowomall_cart
+    set checked = #{status}
+    where user_id = #{userId}
+    and product_id = #{productId}
+  </update>
+  <update id="updateAllProductStatusByUserId" parameterType="map">
+      update wowomall_cart
+      set checked = #{status}
+      where user_id = #{userId}
   </update>
 </mapper>

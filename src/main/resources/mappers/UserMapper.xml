@@ -57,7 +57,7 @@
     where username = #{username}
   </select>
   <select id="checkEmailByUserId" resultType="java.lang.Integer" parameterType="map">
-    select count(1) from wowomall_user
+    select count(*) from wowomall_user
     where email = #{email}
     and id != #{userId}
   </select>

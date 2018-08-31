@@ -118,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ServerResponse<PageInfo> getProductList(Integer categoryId, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
-        if (StringUtils.isBlank(keyword) || categoryId == null){
+        if (categoryId == null && StringUtils.isBlank(keyword)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 

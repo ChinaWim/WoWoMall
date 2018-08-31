@@ -29,6 +29,10 @@
     select id from wowomall_category
     where parent_id = #{parentId}
   </select>
+    <select id="checkCategoryId" resultType="java.lang.Integer">
+        select count(*) from wowomall_category
+        where id = #{categoryId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from wowomall_category
     where id = #{id,jdbcType=INTEGER}

@@ -27,10 +27,20 @@ public class Const {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");
     }
 
+    public interface CartProductStatus{
+        int CHECKED = 1;
+        int UN_CHECKED = 0;
+    }
+
 
     public enum ProductStatusEnum {
-        ON_SALE(1,"在线");
+        /**
+         *　商品上架状态
+         */
+        ON_SALE(1,"在售");
+
         private Integer code;
+
         private String value;
 
         ProductStatusEnum(Integer code,String value){

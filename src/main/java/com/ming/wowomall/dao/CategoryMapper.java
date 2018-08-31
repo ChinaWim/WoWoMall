@@ -24,4 +24,6 @@ public interface CategoryMapper {
 
     int insertBatch(@Param("categoryList") List<Category> categoryList);
 
+    int checkCategoryId(Integer categoryId);
+
 }
