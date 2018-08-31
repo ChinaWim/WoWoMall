@@ -5,7 +5,7 @@
 JDK版本：8<br/>
 数据库：MySQL5.7<br/>
 技术栈：SpringBoot2.0.2/MyBatis3.4.6/Guava/Joda<br/>
-Nginx：1.15.0<br/>
+Nginx版本：1.15.0<br/>
 Maven版本：3.5.3<br/>
 
 <h2>当前版本功能说明</h2>
