@@ -2,6 +2,8 @@ package com.ming.wowomall.dao;
 
 import com.ming.wowomall.pojo.Shipping;
 
+import java.util.List;
+
 public interface ShippingMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface ShippingMapper {
     int updateByPrimaryKeySelective(Shipping record);
 
     int updateByPrimaryKey(Shipping record);
+
+    List<Shipping> list();
 }

@@ -27,6 +27,9 @@
     from wowomall_shipping
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="list" resultType="com.ming.wowomall.pojo.Shipping">
+    select <include refid="Base_Column_List"/> from wowomall_shipping
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_shipping
     where id = #{id,jdbcType=INTEGER}
