@@ -148,6 +148,7 @@ public class UserController {
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
+        //防止横向越权
         user.setId(currentUser.getId());
         ServerResponse response = userService.updateInformation(user);
         if (response.isSuccess()){

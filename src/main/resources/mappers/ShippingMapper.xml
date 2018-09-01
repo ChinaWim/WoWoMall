@@ -30,9 +30,17 @@
   <select id="list" resultType="com.ming.wowomall.pojo.Shipping">
     select <include refid="Base_Column_List"/> from wowomall_shipping
   </select>
+  <select id="getByUserIdShippingId" parameterType="map" resultType="com.ming.wowomall.pojo.Shipping">
+    select <include refid="Base_Column_List"/> from wowomall_shipping
+    where user_id = #{userId} and id = #{shippingId}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_shipping
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByUserIdShippingId">
+    delete from wowomall_shipping
+    where user_id = #{userId} and id = #{shippingId}
   </delete>
   <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.Shipping" >
     insert into wowomall_shipping (id, user_id, receiver_name, 

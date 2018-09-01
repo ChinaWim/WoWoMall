@@ -31,7 +31,7 @@ public class ShippingController {
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return shippingService.insertOrUpdate(shipping);
+        return shippingService.insertOrUpdate(currentUser.getId(),shipping);
     }
 
     @RequestMapping("/update.do")
@@ -40,7 +40,7 @@ public class ShippingController {
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return shippingService.insertOrUpdate(shipping);
+        return shippingService.insertOrUpdate(currentUser.getId(),shipping);
     }
 
     @RequestMapping("/del.do")
@@ -49,7 +49,7 @@ public class ShippingController {
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return shippingService.deleteById(shippingId);
+        return shippingService.delete(currentUser.getId(),shippingId);
     }
 
 
@@ -59,7 +59,7 @@ public class ShippingController {
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return shippingService.getByShippingId(shippingId);
+        return shippingService.getShipping(currentUser.getId(),shippingId);
     }
 
     @RequestMapping("/list.do")
