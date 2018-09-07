@@ -62,6 +62,12 @@ public class ProductManageController {
         return productService.getProductByNameOrProductId(productName,productId,pageNum,pageSize);
     }
 
+    /**
+     * 上传文件
+     * @param session
+     * @param file
+     * @return
+     */
     @PostMapping("/upload.do")
     public Object upload(HttpSession session,@RequestParam(name = "upload_file")MultipartFile file){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
@@ -119,6 +125,13 @@ public class ProductManageController {
         return productService.insertOrUpdate(product);
     }
 
+    /**
+     * 上传富文本
+     * @param response
+     * @param session
+     * @param file
+     * @return
+     */
     @PostMapping("richtext_img_upload.do")
     public Object richtextImgUpload(HttpServletResponse response,HttpSession session, @RequestParam(name = "upload_file")MultipartFile file){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);

@@ -27,14 +27,21 @@
     from wowomall_shipping
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="list" resultType="com.ming.wowomall.pojo.Shipping">
+  <select id="listByUserId" resultType="com.ming.wowomall.pojo.Shipping" parameterType="map">
     select <include refid="Base_Column_List"/> from wowomall_shipping
+    where user_id = #{userId}
   </select>
   <select id="getByUserIdShippingId" parameterType="map" resultType="com.ming.wowomall.pojo.Shipping">
     select <include refid="Base_Column_List"/> from wowomall_shipping
     where user_id = #{userId} and id = #{shippingId}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="getShippingVOById" parameterType="map" resultType="com.ming.wowomall.vo.ShippingVO">
+        select receiver_name,receiver_phone,receiver_mobile,receiver_province,
+        receiver_city,receiver_district,receiver_address,receiver_zip
+        from wowomall_shipping
+        where id = #{shippingId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>

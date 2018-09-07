@@ -26,7 +26,19 @@
     from wowomall_order_item
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="listByUserIdOrderNo" parameterType="map" resultType="com.ming.wowomall.pojo.OrderItem">
+      select <include refid="Base_Column_List"/> from wowomall_order_item
+      where user_id = #{userId}
+      and order_no = #{orderNo}
+    </select>
+    <select id="listOrderItemVOByUserIdOrderNo" parameterType="map" resultType="com.ming.wowomall.vo.OrderItemVO">
+        select  order_no,product_id,product_name,product_image,
+                current_unit_price,quantity,total_price,create_time
+         from wowomall_order_item
+        where user_id = #{userId}
+        and order_no = #{orderNo}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>

@@ -67,9 +67,9 @@ public class ShippingServiceImpl implements ShippingService {
     }
 
     @Override
-    public ServerResponse<PageInfo> list(Integer pageNum, Integer pageSize) {
+    public ServerResponse<PageInfo> list(Integer userId,Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize,true);
-        List<Shipping> shippingList = shippingMapper.list();
+        List<Shipping> shippingList = shippingMapper.listByUserId(userId);
         PageInfo<Shipping> pageInfo = new PageInfo<>(shippingList);
         return  ServerResponse.createBySuccess(pageInfo);
     }

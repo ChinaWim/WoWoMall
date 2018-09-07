@@ -63,12 +63,14 @@ public class ShippingController {
     }
 
     @RequestMapping("/list.do")
-    public Object list(HttpSession session, @RequestParam(defaultValue = "1") Integer pageNum,@RequestParam(defaultValue = "10") Integer pageSize){
+    public Object list( @RequestParam(defaultValue = "1") Integer pageNum,
+                       @RequestParam(defaultValue = "10") Integer pageSize,
+                        HttpSession session){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return shippingService.list(pageNum,pageSize);
+        return shippingService.list(currentUser.getId(),pageNum,pageSize);
     }
 
 

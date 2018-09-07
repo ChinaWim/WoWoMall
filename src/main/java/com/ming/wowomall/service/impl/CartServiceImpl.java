@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
         }
 
         Product product = productMapper.selectByPrimaryKey(productId);
-        if (product == null || !Const.ProductStatusEnum.ON_SALE.getCode().equals(product.getStatus())){
+        if (product == null || Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus()){
             return ServerResponse.createByErrorMessage("商品下架或已删除");
         }
         List<Cart> cartList = cartMapper.getCartByUserIdWithProductId(userId, productId);
@@ -80,7 +80,7 @@ public class CartServiceImpl implements CartService {
         }
 
         Product product = productMapper.selectByPrimaryKey(productId);
-        if (product == null || !Const.ProductStatusEnum.ON_SALE.getCode().equals(product.getStatus())){
+        if (product == null || Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus()){
             return ServerResponse.createByErrorMessage("商品下架或已删除");
         }
         cartMapper.updateByUserIdWithProductId(userId,productId,count);
@@ -134,7 +134,7 @@ public class CartServiceImpl implements CartService {
     private CartVO getCartVOByUserId(Integer userId) {
         CartVO cartVO = new CartVO();
 
-        List<CartProductVO> cartProductVOList = cartMapper.listCartVOByUserId(userId);
+        List<CartProductVO> cartProductVOList = cartMapper.listCartProductVOByUserId(userId);
         boolean allChecked = true;
         BigDecimal cartTotalPrice = new BigDecimal("0");
 

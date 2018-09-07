@@ -19,7 +19,7 @@ public interface CartMapper {
 
     int updateByPrimaryKey(Cart record);
 
-    List<CartProductVO> listCartVOByUserId(Integer userId);
+    List<CartProductVO> listCartProductVOByUserId(Integer userId);
 
     List<Cart> getCartByUserIdWithProductId(@Param("userId") Integer userId, @Param("productId") Integer productId);
 

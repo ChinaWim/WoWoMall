@@ -21,11 +21,11 @@ public interface ProductMapper {
 
     List<Product> listByCategoryId(Integer categoryId);
 
-    List<ProductListVO> listProduct();
+    List<ProductListVO> listProductListVO();
 
-    List<ProductListVO> listProductByNameOrProductId(@Param("productName") String productName,@Param("productId") Integer productId);
+    List<ProductListVO> listProductListVOByNameOrProductId(@Param("productName") String productName,@Param("productId") Integer productId);
 
     int updateStatus(@Param("productId") Integer productId,@Param("status")Integer status);
 
-    List<ProductListVO> listProductByKeyWordCategoryId(@Param("categoryIdList") List categoryIdList, @Param("keyword") String keyword);
+    List<ProductListVO> listProductListVOByKeyWordCategoryId(@Param("categoryIdList") List categoryIdList, @Param("keyword") String keyword);
 }

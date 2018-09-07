@@ -1,5 +1,6 @@
 package com.ming.wowomall.pojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order {
@@ -10,6 +11,8 @@ public class Order {
     private Integer userId;
 
     private Integer shippingId;
+
+    private BigDecimal payment;
 
     private Integer paymentType;
 
@@ -29,11 +32,12 @@ public class Order {
 
     private Date updateTime;
 
-    public Order(Integer id, Long orderNo, Integer userId, Integer shippingId, Integer paymentType, Integer postage, Integer status, Date paymentTime, Date sendTime, Date endTime, Date closeTime, Date createTime, Date updateTime) {
+    public Order(Integer id, Long orderNo, Integer userId, Integer shippingId, BigDecimal payment, Integer paymentType, Integer postage, Integer status, Date paymentTime, Date sendTime, Date endTime, Date closeTime, Date createTime, Date updateTime) {
         this.id = id;
         this.orderNo = orderNo;
         this.userId = userId;
         this.shippingId = shippingId;
+        this.payment = payment;
         this.paymentType = paymentType;
         this.postage = postage;
         this.status = status;
@@ -79,6 +83,14 @@ public class Order {
 
     public void setShippingId(Integer shippingId) {
         this.shippingId = shippingId;
+    }
+
+    public BigDecimal getPayment() {
+        return payment;
+    }
+
+    public void setPayment(BigDecimal payment) {
+        this.payment = payment;
     }
 
     public Integer getPaymentType() {

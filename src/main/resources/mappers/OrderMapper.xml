@@ -7,6 +7,7 @@
       <arg column="order_no" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="shipping_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="payment" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
       <arg column="payment_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="postage" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
@@ -19,7 +20,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, order_no, user_id, shipping_id, payment_type, postage, status, payment_time, 
+    id, order_no, user_id, shipping_id, payment, payment_type, postage, status, payment_time, 
     send_time, end_time, close_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -28,21 +29,40 @@
     from wowomall_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getByUserIdOrderNo" parameterType="map" resultType="com.ming.wowomall.pojo.Order">
+    select <include refid="Base_Column_List"/> from wowomall_order
+    where order_no = #{orderNo}
+    and user_id = #{userId}
+  </select>
+    <select id="getByOrderNo" parameterType="map" resultType="com.ming.wowomall.pojo.Order">
+      select <include refid="Base_Column_List"/> from wowomall_order
+      where order_no = #{orderNo};
+    </select>
+    <select parameterType="map" id="listOrderVOByUserId" resultType="com.ming.wowomall.vo.OrderVO">
+    select  order_no,payment,payment_type,postage,status,payment_time,send_time,end_time,close_time,create_time,shipping_id
+    from wowomall_order
+    where user_id = #{userId}
+    </select>
+  <select id="getOrderVOByOrderNo" parameterType="map" resultType="com.ming.wowomall.vo.OrderVO">
+       select  order_no,payment,payment_type,postage,status,payment_time,send_time,end_time,close_time,create_time,shipping_id
+        from wowomall_order
+        where order_no = #{orderNo}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyProperty="id" parameterType="com.ming.wowomall.pojo.Order" >
+  <insert id="insert" parameterType="com.ming.wowomall.pojo.Order" >
     insert into wowomall_order (id, order_no, user_id, 
-      shipping_id, payment_type, postage, 
-      status, payment_time, send_time, 
-      end_time, close_time)
+      shipping_id, payment, payment_type, 
+      postage, status, payment_time, 
+      send_time, end_time, close_time)
     values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, 
-      #{shippingId,jdbcType=INTEGER}, #{paymentType,jdbcType=INTEGER}, #{postage,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP})
+      #{shippingId,jdbcType=INTEGER}, #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, 
+      #{postage,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, 
+      #{sendTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyProperty="id" parameterType="com.ming.wowomall.pojo.Order" >
+  <insert id="insertSelective" parameterType="com.ming.wowomall.pojo.Order" >
     insert into wowomall_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -56,6 +76,9 @@
       </if>
       <if test="shippingId != null" >
         shipping_id,
+      </if>
+      <if test="payment != null" >
+        payment,
       </if>
       <if test="paymentType != null" >
         payment_type,
@@ -98,6 +121,9 @@
       <if test="shippingId != null" >
         #{shippingId,jdbcType=INTEGER},
       </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=DECIMAL},
+      </if>
       <if test="paymentType != null" >
         #{paymentType,jdbcType=INTEGER},
       </if>
@@ -139,6 +165,9 @@
       <if test="shippingId != null" >
         shipping_id = #{shippingId,jdbcType=INTEGER},
       </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=DECIMAL},
+      </if>
       <if test="paymentType != null" >
         payment_type = #{paymentType,jdbcType=INTEGER},
       </if>
@@ -174,6 +203,7 @@
     set order_no = #{orderNo,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=INTEGER},
       shipping_id = #{shippingId,jdbcType=INTEGER},
+      payment = #{payment,jdbcType=DECIMAL},
       payment_type = #{paymentType,jdbcType=INTEGER},
       postage = #{postage,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
@@ -182,5 +212,11 @@
       end_time = #{endTime,jdbcType=TIMESTAMP},
       close_time = #{closeTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateOrderStatus" parameterType="map">
+    update wowomall_order
+    set status = #{status}
+    where user_id = #{userId}
+    and order_no = #{orderNo}
   </update>
 </mapper>
