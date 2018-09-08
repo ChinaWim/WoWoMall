@@ -64,11 +64,29 @@ public class Const {
 
 
     public enum OrderStatusEnum {
+        /**
+         *订单已取消
+         */
         CANCELED(0,"已取消"),
+        /**
+         *订单未支付
+         */
         NO_PAY(10,"未支付"),
+        /**
+         *订单已付款
+         */
         PAID(20,"已付款"),
+        /**
+         *订单已发货
+         */
         SHIPPED(40,"已发货"),
+        /**
+         *订单完成
+         */
         ORDER_SUCCESS(50,"订单完成"),
+        /**
+         *订单关闭
+         */
         ORDER_CLOSE(60,"订单关闭");
 
         private int code;
@@ -87,6 +105,17 @@ public class Const {
         public String getValue() {
             return value;
         }
+
+        public static String codeOfValue(Integer code){
+            OrderStatusEnum[] values = OrderStatusEnum.values();
+            for (OrderStatusEnum orderStatusEnum : values) {
+                if(orderStatusEnum.getCode() == code){
+                    return orderStatusEnum.getValue();
+                }
+            }
+            return null;
+        }
+
     }
 
     public interface AlipayCallback {
@@ -117,7 +146,13 @@ public class Const {
     }
 
     public enum PayPlatformEnum{
+        /**
+         * 支付宝平台
+         */
         ALIPAY(1,"支付宝"),
+        /**
+         * 微信平台
+         */
         WECHAT(2,"微信");
 
         private int code;
@@ -136,6 +171,40 @@ public class Const {
         public String getValue() {
             return value;
         }
+    }
+
+    public enum PaymentTypeEnum{
+        /**
+         * 在线支付
+         */
+        ONLINE(1,"在线支付");
+
+        private  int code;
+
+        private String value;
+
+        PaymentTypeEnum(int code,String value){
+            this.code = code;
+            this.value = value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+        public static String codeOfValue(Integer code){
+            PaymentTypeEnum[] values = PaymentTypeEnum.values();
+            for (PaymentTypeEnum paymentTypeEnum : values) {
+                if(paymentTypeEnum.getCode() == code){
+                    return paymentTypeEnum.getValue();
+                }
+            }
+            return null;
+        }
+
     }
 
 

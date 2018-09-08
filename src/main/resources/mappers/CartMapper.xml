@@ -32,10 +32,15 @@
     where user_id = #{userId}
     and product_id = #{productId}
   </select>
-  <select id="countCartProductByUserId" resultType="java.lang.Integer">
+  <select id="countCartProductByUserId" resultType="java.lang.Integer" parameterType="int">
     select IFNULL(sum(quantity),0) from wowomall_cart
     where user_id = #{userId}
 
+  </select>
+  <select id="listCheckedCart" resultType="com.ming.wowomall.pojo.Cart">
+    select <include refid="Base_Column_List"/> from wowomall_cart
+    where user_id = #{userId}
+    and checked = 1;
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_cart
@@ -52,6 +57,11 @@
       </if>
       and user_id = #{userId}
     </where>
+  </delete>
+  <delete id="deleteCheckedCartByUserId" parameterType="int">
+    delete from wowomall_cart
+    where user_id = #{userId}
+    and checked = 1;
   </delete>
   <insert id="insert"  keyProperty="id" parameterType="com.ming.wowomall.pojo.Cart" >
     insert into wowomall_cart (id, user_id, product_id, 

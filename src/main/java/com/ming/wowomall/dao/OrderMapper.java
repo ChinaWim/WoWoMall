@@ -23,10 +23,12 @@ public interface OrderMapper {
 
     Order getByOrderNo(Long orderNo);
 
-    List<OrderVO> listOrderVOByUserId(Integer userId);
-
-    OrderVO getOrderVOByOrderNo(Long orderNo);
-
     int updateOrderStatus(@Param("userId") Integer userId,@Param("orderNo")Long orderNo,@Param("status")Integer status);
+
+    List<Order> listOrderByUserId(Integer userId);
+
+    List<Order> listOrder();
+
+
 
 }

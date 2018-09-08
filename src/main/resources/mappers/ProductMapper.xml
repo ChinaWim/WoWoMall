@@ -218,4 +218,9 @@
     set status = #{status}
     where id = #{productId}
   </update>
+    <update id="updateStock" parameterType="map">
+      update wowomall_product
+      set stock = stock + #{stock}
+      where id = #{productId}
+    </update>
 </mapper>

@@ -26,7 +26,7 @@ public class OrderItemVO implements Serializable {
 
     private BigDecimal totalPrice;
 
-    private Date createTime;
+    private String createTime;
 
     public Long getOrderNo() {
         return orderNo;
@@ -84,13 +84,14 @@ public class OrderItemVO implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
+
 
     @Override
     public String toString() {
@@ -102,7 +103,7 @@ public class OrderItemVO implements Serializable {
                 ", currentUnitPrice=" + currentUnitPrice +
                 ", quantity=" + quantity +
                 ", totalPrice=" + totalPrice +
-                ", createTime=" + createTime +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

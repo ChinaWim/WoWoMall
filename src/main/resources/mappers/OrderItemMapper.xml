@@ -31,14 +31,14 @@
       where user_id = #{userId}
       and order_no = #{orderNo}
     </select>
-    <select id="listOrderItemVOByUserIdOrderNo" parameterType="map" resultType="com.ming.wowomall.vo.OrderItemVO">
-        select  order_no,product_id,product_name,product_image,
-                current_unit_price,quantity,total_price,create_time
-         from wowomall_order_item
-        where user_id = #{userId}
-        and order_no = #{orderNo}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+  <select id="listByOrderNo" parameterType="map" resultType="com.ming.wowomall.pojo.OrderItem">
+    select <include refid="Base_Column_List"/> from wowomall_order_item
+    where order_no = #{orderNo}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_order_item
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -122,6 +122,17 @@
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
+  </insert>
+  <insert id="insertBatch" parameterType="map">
+    insert into wowomall_order_item
+    (user_id, order_no, product_id, product_name, product_image, current_unit_price,
+    quantity, total_price)
+    values
+    <foreach collection="orderItemList" item="orderItem" separator="," >
+      (#{orderItem.userId},#{orderItem.orderNo},#{orderItem.productId},#{orderItem.productName},#{orderItem.productImage},
+      #{orderItem.currentUnitPrice},#{orderItem.quantity},#{orderItem.totalPrice}
+      )
+    </foreach>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ming.wowomall.pojo.OrderItem" >
     update wowomall_order_item

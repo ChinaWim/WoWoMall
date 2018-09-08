@@ -38,16 +38,15 @@
       select <include refid="Base_Column_List"/> from wowomall_order
       where order_no = #{orderNo};
     </select>
-    <select parameterType="map" id="listOrderVOByUserId" resultType="com.ming.wowomall.vo.OrderVO">
-    select  order_no,payment,payment_type,postage,status,payment_time,send_time,end_time,close_time,create_time,shipping_id
-    from wowomall_order
+  <select id="listOrderByUserId" parameterType="map" resultType="com.ming.wowomall.pojo.Order">
+    select <include refid="Base_Column_List"/> from wowomall_order
     where user_id = #{userId}
-    </select>
-  <select id="getOrderVOByOrderNo" parameterType="map" resultType="com.ming.wowomall.vo.OrderVO">
-       select  order_no,payment,payment_type,postage,status,payment_time,send_time,end_time,close_time,create_time,shipping_id
-        from wowomall_order
-        where order_no = #{orderNo}
   </select>
+  <select id="listOrder" resultType="com.ming.wowomall.pojo.Order">
+    select <include refid="Base_Column_List"/> from wowomall_order
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_order
     where id = #{id,jdbcType=INTEGER}

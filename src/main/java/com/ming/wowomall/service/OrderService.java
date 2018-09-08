@@ -16,17 +16,15 @@ public interface OrderService {
 
     ServerResponse<Map> pay(Integer userId, Long orderNo, String path);
 
-    /**
-     * 获取订单状态
-     * @param userId
-     * @param orderNo
-     * @return
-     */
     ServerResponse<Boolean> getOrderPayStatus(Integer userId,Long orderNo);
-
 
     ServerResponse aliCallback(Map<String, String> params);
 
+    /**
+     * 获取订单商品信息
+     * @param userId
+     * @return
+     */
     ServerResponse<Map> getOrderCartProduct(Integer userId);
 
     ServerResponse<PageInfo> listOrderByUserId(Integer userId,Integer pageNum,Integer pageSize);
@@ -35,4 +33,11 @@ public interface OrderService {
 
     ServerResponse cancelOrder(Integer userId, Long orderNo);
 
+    ServerResponse listManageOrder(Integer pageNum, Integer pageSize);
+
+    ServerResponse<PageInfo> getManageOrder(Long orderNo,Integer pageNum,Integer pageSize);
+
+    ServerResponse<OrderVO> getManageOrderDetail(Long orderNo);
+
+    ServerResponse sendGoods(Long orderNo);
 }

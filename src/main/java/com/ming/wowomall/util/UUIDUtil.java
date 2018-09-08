@@ -27,13 +27,9 @@ public class UUIDUtil {
      *获取当前时间数字字符串
      * @return
      */
-    public static String createByTime() {
-
-        StringBuilder nowTime = new StringBuilder(String.valueOf(System.currentTimeMillis()));
-        for (int i = 0; i < 5; i++) {
-            nowTime.append(new Random().nextInt(10));
-        }
-        return nowTime.toString();
+    public static Long createByTime() {
+      Long currentTime = System.currentTimeMillis();
+        return currentTime + new Random().nextInt(100);
     }
 
     /**
@@ -46,5 +42,7 @@ public class UUIDUtil {
         return DigestUtils.md5DigestAsHex(string.getBytes());
     }
 
-
+    public static void main(String[] args) {
+        System.out.println(UUIDUtil.createByTime());
+    }
 }

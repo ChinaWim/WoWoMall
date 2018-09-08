@@ -28,4 +28,6 @@ public interface ProductMapper {
     int updateStatus(@Param("productId") Integer productId,@Param("status")Integer status);
 
     List<ProductListVO> listProductListVOByKeyWordCategoryId(@Param("categoryIdList") List categoryIdList, @Param("keyword") String keyword);
+
+    int updateStock(@Param("productId") Integer productId,@Param("stock") Integer stock);
 }

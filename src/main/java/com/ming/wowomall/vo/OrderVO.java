@@ -18,19 +18,23 @@ public class OrderVO implements Serializable {
 
     private Integer paymentType;
 
+    private String paymentDesc;
+
     private Integer postage;
 
     private Integer status;
 
-    private Date paymentTime;
+    private String statusDesc;
 
-    private Date sendTime;
+    private String paymentTime;
 
-    private Date endTime;
+    private String sendTime;
 
-    private Date closeTime;
+    private String endTime;
 
-    private Date createTime;
+    private String closeTime;
+
+    private String createTime;
 
     private List<OrderItemVO> orderItemVoList;
 
@@ -67,6 +71,14 @@ public class OrderVO implements Serializable {
         this.paymentType = paymentType;
     }
 
+    public String getPaymentDesc() {
+        return paymentDesc;
+    }
+
+    public void setPaymentDesc(String paymentDesc) {
+        this.paymentDesc = paymentDesc;
+    }
+
     public Integer getPostage() {
         return postage;
     }
@@ -83,43 +95,51 @@ public class OrderVO implements Serializable {
         this.status = status;
     }
 
-    public Date getPaymentTime() {
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
+
+    public String getPaymentTime() {
         return paymentTime;
     }
 
-    public void setPaymentTime(Date paymentTime) {
+    public void setPaymentTime(String paymentTime) {
         this.paymentTime = paymentTime;
     }
 
-    public Date getSendTime() {
+    public String getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Date sendTime) {
+    public void setSendTime(String sendTime) {
         this.sendTime = sendTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public Date getCloseTime() {
+    public String getCloseTime() {
         return closeTime;
     }
 
-    public void setCloseTime(Date closeTime) {
+    public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -147,7 +167,6 @@ public class OrderVO implements Serializable {
         this.shippingVo = shippingVo;
     }
 
-
     public String getImageHost() {
         return imageHost;
     }
@@ -164,19 +183,22 @@ public class OrderVO implements Serializable {
         this.receiverName = receiverName;
     }
 
+
     @Override
     public String toString() {
         return "OrderVO{" +
                 "orderNo=" + orderNo +
                 ", payment=" + payment +
                 ", paymentType=" + paymentType +
+                ", paymentDesc='" + paymentDesc + '\'' +
                 ", postage=" + postage +
                 ", status=" + status +
-                ", paymentTime=" + paymentTime +
-                ", sendTime=" + sendTime +
-                ", endTime=" + endTime +
-                ", closeTime=" + closeTime +
-                ", createTime=" + createTime +
+                ", statusDesc='" + statusDesc + '\'' +
+                ", paymentTime='" + paymentTime + '\'' +
+                ", sendTime='" + sendTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", closeTime='" + closeTime + '\'' +
+                ", createTime='" + createTime + '\'' +
                 ", orderItemVoList=" + orderItemVoList +
                 ", shippingId=" + shippingId +
                 ", shippingVo=" + shippingVo +

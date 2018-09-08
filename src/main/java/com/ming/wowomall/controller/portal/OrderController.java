@@ -141,7 +141,7 @@ public class OrderController {
     public Object list(HttpSession session, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1")Integer pageNum){
         User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
         return orderService.listOrderByUserId(currentUser.getId(),pageNum,pageSize);
     }
@@ -160,11 +160,9 @@ public class OrderController {
     public Object cancel(HttpSession session,Long orderNo){
         User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-
         return orderService.cancelOrder(currentUser.getId(),orderNo);
-
     }
 
 
