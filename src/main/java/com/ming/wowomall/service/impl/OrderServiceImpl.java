@@ -320,7 +320,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public ServerResponse getOrderCartProduct(Integer userId) {
+    public ServerResponse<OrderProductVO> getOrderCartProduct(Integer userId) {
         List<Cart> cartList = cartMapper.listCheckedCart(userId);
         if (CollectionUtils.isEmpty(cartList)) {
             return ServerResponse.createByErrorMessage("当前购物车为空");
@@ -337,13 +337,12 @@ public class OrderServiceImpl implements OrderService {
             orderItemVOList.add(orderItemVO);
             productTotalPrice = BigDecimalUtil.add(orderItem.getTotalPrice().doubleValue(),productTotalPrice.doubleValue());
         }
+        OrderProductVO orderProductVO = new OrderProductVO();
+        orderProductVO.setOrderItemVoList(orderItemVOList);
+        orderProductVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+        orderProductVO.setProductTotalPrice(productTotalPrice);
 
-        Map resultMap = Maps.newHashMap();
-        resultMap.put("orderItemVoList",orderItemVOList);
-        resultMap.put("imageHost",PropertiesUtil.getProperty("ftp.server.http.prefix"));
-        resultMap.put("productTotalPrice",productTotalPrice);
-
-        return ServerResponse.createBySuccess(resultMap);
+        return ServerResponse.createBySuccess(orderProductVO);
     }
 
     /**
@@ -378,7 +377,7 @@ public class OrderServiceImpl implements OrderService {
             return ServerResponse.createByErrorMessage("没有找到订单");
         }
         List<OrderItem> orderItemList = orderItemMapper.listByUserIdOrderNo(userId, orderNo);
-        OrderVO orderVO = assembledOrderVO(order, orderItemList);
+        OrderVO orderVO = this.assembledOrderVO(order, orderItemList);
         return ServerResponse.createBySuccess(orderVO);
     }
 

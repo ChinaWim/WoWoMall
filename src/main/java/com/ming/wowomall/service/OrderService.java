@@ -2,6 +2,7 @@ package com.ming.wowomall.service;
 
 import com.github.pagehelper.PageInfo;
 import com.ming.wowomall.common.ServerResponse;
+import com.ming.wowomall.vo.OrderProductVO;
 import com.ming.wowomall.vo.OrderVO;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface OrderService {
      * @param userId
      * @return
      */
-    ServerResponse<Map> getOrderCartProduct(Integer userId);
+    ServerResponse<OrderProductVO> getOrderCartProduct(Integer userId);
 
     ServerResponse<PageInfo> listOrderByUserId(Integer userId,Integer pageNum,Integer pageSize);
 

@@ -41,9 +41,11 @@
   <select id="listOrderByUserId" parameterType="map" resultType="com.ming.wowomall.pojo.Order">
     select <include refid="Base_Column_List"/> from wowomall_order
     where user_id = #{userId}
+    order by create_time desc
   </select>
   <select id="listOrder" resultType="com.ming.wowomall.pojo.Order">
     select <include refid="Base_Column_List"/> from wowomall_order
+    order by create_time desc
   </select>
 
 
