@@ -404,7 +404,7 @@ public class OrderServiceImpl implements OrderService {
         PageHelper.startPage(pageNum,pageSize,true);
         List<Order> orderList = orderMapper.listOrder();
         List<OrderVO> orderVOList = assembleOrderVOList(orderList);
-        PageInfo pageInfo = new PageInfo(orderVOList);
+        PageInfo<OrderVO> pageInfo = new PageInfo(orderVOList);
         return ServerResponse.createBySuccess(pageInfo);
     }
 

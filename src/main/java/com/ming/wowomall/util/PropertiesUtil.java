@@ -41,5 +41,31 @@ public class PropertiesUtil {
         return value.trim();
     }
 
+    public static Integer getPropertyAsInt(String key){
+        String valueStr = props.getProperty(key.trim());
+        if (StringUtils.isBlank(valueStr)) {
+            return 0;
+        }
+        try{
+            Integer value = Integer.parseInt(valueStr);
+            return value;
+        }catch (NumberFormatException e){
+            return 0;
+        }
+    }
+
+    public static Integer getPropertyAsInt(String key, Integer defaultValue){
+        String valueStr = props.getProperty(key.trim());
+        if (StringUtils.isBlank(valueStr)) {
+            return defaultValue;
+        }
+        try{
+            Integer value = Integer.parseInt(valueStr);
+            return value;
+        }catch (NumberFormatException e){
+            return defaultValue;
+        }
+    }
+
 
 }

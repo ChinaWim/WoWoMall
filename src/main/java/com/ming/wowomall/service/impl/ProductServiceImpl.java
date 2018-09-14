@@ -44,18 +44,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ServerResponse<PageInfo> getManageProductList(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize, true);
-        List<ProductListVO> productList = productMapper.listProductListVO();
-        productList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
-        PageInfo<ProductListVO> pageInfo = new PageInfo<>(productList);
+        List<ProductListVO> productVOList = productMapper.listProductListVO();
+        productVOList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
+        PageInfo<ProductListVO> pageInfo = new PageInfo<>(productVOList);
         return ServerResponse.createBySuccess(pageInfo);
     }
 
     @Override
     public ServerResponse<PageInfo> getProductByNameOrProductId(String productName, Integer productId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize, true);
-        List<ProductListVO> productList = productMapper.listProductListVOByNameOrProductId(productName, productId);
-        productList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
-        PageInfo<Product> pageInfo = new PageInfo(productList);
+        List<ProductListVO> productVOList = productMapper.listProductListVOByNameOrProductId(productName, productId);
+        productVOList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
+        PageInfo<Product> pageInfo = new PageInfo(productVOList);
         return ServerResponse.createBySuccess(pageInfo);
     }
 
@@ -135,9 +135,9 @@ public class ProductServiceImpl implements ProductService {
                 PageHelper.orderBy(orderArray[0]+" "+orderArray[1]);
             }
         }
-        List<ProductListVO> productList = productMapper.listProductListVOByKeyWordCategoryId(categoryIdList.size() == 0 ? null : categoryIdList, keyword);
-        productList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
-        PageInfo<ProductListVO> pageInfo = new PageInfo<>(productList);
+        List<ProductListVO> productVOList = productMapper.listProductListVOByKeyWordCategoryId(categoryIdList.size() == 0 ? null : categoryIdList, keyword);
+        productVOList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
+        PageInfo<ProductListVO> pageInfo = new PageInfo<>(productVOList);
         return ServerResponse.createBySuccess(pageInfo);
     }
 
