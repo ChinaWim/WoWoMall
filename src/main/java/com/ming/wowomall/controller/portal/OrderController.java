@@ -8,6 +8,10 @@ import com.ming.wowomall.common.ResponseCode;
 import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.service.OrderService;
+import com.ming.wowomall.util.CookieUtil;
+import com.ming.wowomall.util.JsonUtil;
+import com.ming.wowomall.util.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,29 +40,37 @@ public class OrderController {
 
     /**
      * 创建订单
-     * @param session
      * @param shippingId
      * @return
      */
     @RequestMapping("/create.do")
-    public Object create(HttpSession session,Integer shippingId){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object create(HttpServletRequest request,Integer shippingId){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return orderService.insertOrder(currentUser.getId(),shippingId);
     }
 
     /**
      * 获取订单的商品信息
-     * @param session
      * @return
      */
     @RequestMapping("/get_order_cart_product.do")
-    public Object getOrderCartProduct(HttpSession session){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object getOrderCartProduct(HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return orderService.getOrderCartProduct(currentUser.getId());
     }
@@ -66,15 +78,19 @@ public class OrderController {
     /**
      * 支付
      * @param orderNo
-     * @param session
      * @param request
      * @return
      */
     @RequestMapping("/pay.do")
-    public Object pay(Long orderNo,HttpSession session, HttpServletRequest request){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object pay(Long orderNo, HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         //二维码本地保存路径
         String path = request.getServletContext().getRealPath("/upload");
@@ -83,15 +99,20 @@ public class OrderController {
 
     /**
      * 查询订单状态
-     * @param session
+     * @param request
      * @param orderNo
      * @return
      */
     @RequestMapping("/query_order_pay_status.do")
-    public Object queryOrderPayStatus(HttpSession session,Long orderNo){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object queryOrderPayStatus(HttpServletRequest request,Long orderNo){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return orderService.getOrderPayStatus(currentUser.getId(),orderNo);
     }
@@ -135,29 +156,44 @@ public class OrderController {
     }
 
     @RequestMapping("/list.do")
-    public Object list(HttpSession session, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1")Integer pageNum){
-        User currentUser = (User)session.getAttribute(Const.CURRENT_USER);
+    public Object list(HttpServletRequest request, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1")Integer pageNum){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return orderService.listOrderByUserId(currentUser.getId(),pageNum,pageSize);
     }
 
     @RequestMapping("/detail.do")
-    public Object detail(HttpSession session,Long orderNo){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object detail(HttpServletRequest request,Long orderNo){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return orderService.getOrderDetail(currentUser.getId(),orderNo);
     }
 
 
     @RequestMapping("/cancel.do")
-    public Object cancel(HttpSession session,Long orderNo){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object cancel(HttpServletRequest request,Long orderNo){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         return orderService.cancelOrder(currentUser.getId(),orderNo);
     }

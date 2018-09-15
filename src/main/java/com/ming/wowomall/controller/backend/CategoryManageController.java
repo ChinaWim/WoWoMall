@@ -6,12 +6,17 @@ import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.service.CategoryService;
 import com.ming.wowomall.service.UserService;
+import com.ming.wowomall.util.CookieUtil;
+import com.ming.wowomall.util.JsonUtil;
+import com.ming.wowomall.util.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -29,10 +34,15 @@ public class CategoryManageController {
     private UserService userService;
 
     @PostMapping("/get_category.do")
-    public Object getCategory(@RequestParam(defaultValue = "0") Integer categoryId, HttpSession session){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object getCategory(@RequestParam(defaultValue = "0") Integer categoryId, HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
@@ -42,10 +52,15 @@ public class CategoryManageController {
 
 
     @PostMapping("/add_category.do")
-    public Object addCategory(@RequestParam(defaultValue = "0") Integer parentId, String categoryName, HttpSession session){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object addCategory(@RequestParam(defaultValue = "0") Integer parentId, String categoryName, HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
@@ -55,10 +70,15 @@ public class CategoryManageController {
 
 
     @PostMapping("/set_category_name.do")
-    public Object setCategoryName(Integer categoryId, String categoryName, HttpSession session){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object setCategoryName(Integer categoryId, String categoryName, HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
@@ -67,10 +87,15 @@ public class CategoryManageController {
     }
 
     @PostMapping("/get_deep_category.do")
-    public Object getDeepCategory(Integer categoryId,HttpSession session){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object getDeepCategory(Integer categoryId,HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录");
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
         if (!userService.checkRoleAdmin(currentUser).isSuccess()) {
             return ServerResponse.createByErrorMessage("没有权限");
