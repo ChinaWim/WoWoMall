@@ -4,6 +4,8 @@ import com.ming.wowomall.common.Const;
 import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.service.UserService;
+import com.ming.wowomall.util.JsonUtil;
+import com.ming.wowomall.util.RedisPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +31,7 @@ public class UserManageController {
         if (response.isSuccess()) {
             User user = response.getData();
             if (Const.Role.ROLE_ADMIN == user.getRole()) {
-                session.setAttribute(Const.CURRENT_USER,response.getData());
+                RedisPoolUtil.setEx(session.getId(),JsonUtil.obj2String(user),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }else {
                 return ServerResponse.createByErrorMessage("不是管理员,无法登录");
             }

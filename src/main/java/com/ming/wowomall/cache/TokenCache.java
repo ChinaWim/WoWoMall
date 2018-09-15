@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-/**
+/**Guava本地缓存(本虚拟机缓存，分布式不能共享)
  * @author m969130721@163.com
  * @date 18-8-28 下午10:22
  */
 public class TokenCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenCache.class);
+
     //LRU
     private static LoadingCache<String,String> localCache = CacheBuilder.newBuilder().
             initialCapacity(1000).maximumSize(10000).expireAfterAccess(12,TimeUnit.HOURS).build(new CacheLoader<String, String>() {
@@ -26,8 +27,6 @@ public class TokenCache {
         }
     });
 
-
-    public static final String TOKEN_PREFIX = "token_";
 
     public static void setKey(String key,String value){
         localCache.put(key,value);

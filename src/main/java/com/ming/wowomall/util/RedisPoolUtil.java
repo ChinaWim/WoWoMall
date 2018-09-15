@@ -105,7 +105,6 @@ public class RedisPoolUtil {
     }
 
 
-
     public static Long del(String... keys) {
         Jedis jedis = null;
         Long result = null;

@@ -18,6 +18,9 @@ public class Const {
 
     public static final String USERNAME = "username";
 
+    public static final String TOKEN_PREFIX = "token_";
+
+
     public interface Role {
         int ROLE_CUSTOMER = 0;
         int ROLE_ADMIN = 1;
@@ -36,6 +39,47 @@ public class Const {
         String LIMI_NUM_SUCCESS = "LIMI_NUM_SUCCESS";
     }
 
+
+    public interface AlipayCallback {
+        /**
+         * alipay交易创建，等待买家付款
+         */
+        String TRADE_STATUS_WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
+
+        /**
+         *alipay交易支付成功
+         */
+        String TRADE_STATUS_TRADE_SUCCESS = "TRADE_SUCCESS";
+
+        /**
+         * alipay未付款交易超时关闭，或支付完成后全额退款
+         */
+        String TRADE_STATUS_TRADE_CLOSED = "TRADE_CLOSED";
+
+        /**
+         * wowomall系统成功
+         */
+        String RESPONSE_SUCCESS = "success";
+
+        /**
+         *wowomall系统失败
+         */
+        String RESPONSE_FAILED = "failed";
+    }
+
+
+    public interface RedisCacheExtime{
+        /**
+         * session过期时间30分钟
+         */
+        int REDIS_SESSION_EXTIME = 60 * 30;
+
+        int CHECK_ANSWER_TOKEN_EXTIME = 60 * 60 * 12;
+    }
+
+
+
+    //enum
 
     public enum ProductStatusEnum {
         /**
@@ -116,33 +160,6 @@ public class Const {
             return null;
         }
 
-    }
-
-    public interface AlipayCallback {
-        /**
-         * alipay交易创建，等待买家付款
-         */
-        String TRADE_STATUS_WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
-
-        /**
-         *alipay交易支付成功
-         */
-        String TRADE_STATUS_TRADE_SUCCESS = "TRADE_SUCCESS";
-
-        /**
-         * alipay未付款交易超时关闭，或支付完成后全额退款
-         */
-        String TRADE_STATUS_TRADE_CLOSED = "TRADE_CLOSED";
-
-        /**
-         * wowomall系统成功
-         */
-        String RESPONSE_SUCCESS = "success";
-
-        /**
-         *wowomall系统失败
-         */
-        String RESPONSE_FAILED = "failed";
     }
 
     public enum PayPlatformEnum{

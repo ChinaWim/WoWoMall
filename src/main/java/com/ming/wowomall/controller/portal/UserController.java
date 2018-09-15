@@ -5,10 +5,16 @@ import com.ming.wowomall.common.ResponseCode;
 import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.service.UserService;
+import com.ming.wowomall.util.CookieUtil;
+import com.ming.wowomall.util.JsonUtil;
+import com.ming.wowomall.util.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 
@@ -30,10 +36,11 @@ public class UserController {
      * @return
      */
     @PostMapping("/login.do")
-    public Object login(String username,String password,HttpSession session){
+    public Object login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
         ServerResponse response = userService.login(username, password);
         if (response.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER,response.getData());
+            CookieUtil.writeLoginToken(httpServletResponse,session.getId());
+            RedisPoolUtil.setEx(session.getId(),JsonUtil.obj2String(response.getData()),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         }
         return response;
     }
@@ -43,8 +50,10 @@ public class UserController {
      * @return
      */
     @GetMapping("/logout.do")
-    public Object logout(HttpSession session){
-        session.removeAttribute(Const.CURRENT_USER);
+    public Object logout(HttpServletRequest request,HttpServletResponse response){
+        String loginToken = CookieUtil.readLoginToken(request);
+        CookieUtil.delLoginToken(request,response);
+        RedisPoolUtil.del(loginToken);
         return ServerResponse.createBySuccessMessage("退出成功");
     }
 
@@ -73,12 +82,16 @@ public class UserController {
 
     /**
      * 获取登录用户信息
-     * @param session
      * @return
      */
     @PostMapping("/get_user_info.do")
-    public Object getUserInfo(HttpSession session){
-        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+    public Object getUserInfo(HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isBlank(loginToken)){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
+        }
+        String userJsonStr = RedisPoolUtil.get(loginToken);
+        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
         if (currentUser == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
         }
