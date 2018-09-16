@@ -31,7 +31,7 @@ public class CartController {
 
 
     @GetMapping("/list.do")
-    public Object list(HttpServletRequest request){
+    public ServerResponse list(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -45,7 +45,7 @@ public class CartController {
     }
 
     @GetMapping("/add.do")
-    public Object addProduct(HttpServletRequest request,Integer productId,Integer count){
+    public ServerResponse addProduct(HttpServletRequest request,Integer productId,Integer count){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -60,7 +60,7 @@ public class CartController {
 
 
     @RequestMapping("/update.do")
-    public Object updateProduct(HttpServletRequest request,Integer productId,Integer count){
+    public ServerResponse updateProduct(HttpServletRequest request,Integer productId,Integer count){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -74,7 +74,7 @@ public class CartController {
     }
 
     @RequestMapping("/delete_product.do")
-    public Object deleteProduct(HttpServletRequest request,String productIds){
+    public ServerResponse deleteProduct(HttpServletRequest request,String productIds){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -98,7 +98,7 @@ public class CartController {
     }
 
     @RequestMapping("/select.do")
-    public Object selectProduct(HttpServletRequest request,Integer productId){
+    public ServerResponse selectProduct(HttpServletRequest request,Integer productId){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -112,7 +112,7 @@ public class CartController {
     }
 
     @RequestMapping("/un_select.do")
-    public Object unSelectProduct (HttpServletRequest request,Integer productId){
+    public ServerResponse unSelectProduct (HttpServletRequest request,Integer productId){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -126,7 +126,7 @@ public class CartController {
     }
 
     @RequestMapping("/get_cart_product_count.do")
-    public Object getCartProductCount (HttpServletRequest request,Integer productId){
+    public ServerResponse getCartProductCount (HttpServletRequest request,Integer productId){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -141,7 +141,7 @@ public class CartController {
 
 
     @RequestMapping("/select_all.do")
-    public Object selectAllProduct (HttpServletRequest request){
+    public ServerResponse selectAllProduct (HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -155,7 +155,7 @@ public class CartController {
     }
 
     @RequestMapping("/un_select_all.do")
-    public Object unSelectAllProduct (HttpServletRequest request){
+    public ServerResponse unSelectAllProduct (HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");

@@ -29,7 +29,7 @@ public class ShippingController {
 
 
     @RequestMapping("/add.do")
-    public Object add(HttpServletRequest request, Shipping shipping){
+    public ServerResponse add(HttpServletRequest request, Shipping shipping){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -43,7 +43,7 @@ public class ShippingController {
     }
 
     @RequestMapping("/update.do")
-    public Object update(HttpServletRequest request,Shipping shipping){
+    public ServerResponse update(HttpServletRequest request,Shipping shipping){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -57,7 +57,7 @@ public class ShippingController {
     }
 
     @RequestMapping("/del.do")
-    public Object delete(HttpServletRequest request,Integer shippingId){
+    public ServerResponse delete(HttpServletRequest request,Integer shippingId){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -72,7 +72,7 @@ public class ShippingController {
 
 
     @RequestMapping("/select.do")
-    public Object select(HttpServletRequest request,Integer shippingId){
+    public ServerResponse select(HttpServletRequest request,Integer shippingId){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -86,7 +86,7 @@ public class ShippingController {
     }
 
     @RequestMapping("/list.do")
-    public Object list( @RequestParam(defaultValue = "1") Integer pageNum,
+    public ServerResponse list( @RequestParam(defaultValue = "1") Integer pageNum,
                        @RequestParam(defaultValue = "10") Integer pageSize,
                         HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);

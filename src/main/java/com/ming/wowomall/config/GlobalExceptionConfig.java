@@ -22,7 +22,7 @@ public class GlobalExceptionConfig {
 
     @ExceptionHandler(Exception.class)
     public ModelAndView resolveException (Exception exception, HttpServletRequest request){
-        log.error("{} Exception,",request.getRequestURI(),exception);
+        log.error("requestURI:{} Exception:",request.getRequestURI(),exception);
         ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
         modelAndView.addObject("status",ResponseCode.ERROR.getCode());
         modelAndView.addObject("msg","接口异常,详情请查看服务端日志信息");

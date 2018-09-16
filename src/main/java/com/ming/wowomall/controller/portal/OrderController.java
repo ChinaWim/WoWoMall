@@ -43,7 +43,7 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/create.do")
-    public Object create(HttpServletRequest request,Integer shippingId){
+    public ServerResponse create(HttpServletRequest request,Integer shippingId){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -61,7 +61,7 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/get_order_cart_product.do")
-    public Object getOrderCartProduct(HttpServletRequest request){
+    public ServerResponse getOrderCartProduct(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -81,7 +81,7 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/pay.do")
-    public Object pay(Long orderNo, HttpServletRequest request){
+    public ServerResponse pay(Long orderNo, HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -103,7 +103,7 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/query_order_pay_status.do")
-    public Object queryOrderPayStatus(HttpServletRequest request,Long orderNo){
+    public ServerResponse queryOrderPayStatus(HttpServletRequest request,Long orderNo){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -155,7 +155,7 @@ public class OrderController {
     }
 
     @RequestMapping("/list.do")
-    public Object list(HttpServletRequest request, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1")Integer pageNum){
+    public ServerResponse list(HttpServletRequest request, @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "1")Integer pageNum){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -169,7 +169,7 @@ public class OrderController {
     }
 
     @RequestMapping("/detail.do")
-    public Object detail(HttpServletRequest request,Long orderNo){
+    public ServerResponse detail(HttpServletRequest request,Long orderNo){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -184,7 +184,7 @@ public class OrderController {
 
 
     @RequestMapping("/cancel.do")
-    public Object cancel(HttpServletRequest request,Long orderNo){
+    public ServerResponse cancel(HttpServletRequest request,Long orderNo){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");

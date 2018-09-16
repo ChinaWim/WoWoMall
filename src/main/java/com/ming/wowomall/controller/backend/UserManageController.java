@@ -8,6 +8,7 @@ import com.ming.wowomall.util.CookieUtil;
 import com.ming.wowomall.util.JsonUtil;
 import com.ming.wowomall.util.RedisShardedPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,11 +29,11 @@ public class UserManageController {
 
 
     @PostMapping("/login.do")
-    public Object login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
+    public ServerResponse login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
         ServerResponse<User> response = userService.login(username, password);
         if (response.isSuccess()) {
             User user = response.getData();
-            if (Const.Role.ROLE_ADMIN == user.getRole()) {
+            if (userService.checkRoleAdmin(user).isSuccess()) {
                 CookieUtil.writeLoginToken(httpServletResponse,session.getId());
                 RedisShardedPoolUtil.setEx(session.getId(),JsonUtil.obj2String(user),Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }else {

@@ -1,5 +1,7 @@
 package com.ming.wowomall.controller.portal;
 
+import com.github.pagehelper.PageInfo;
+import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +22,13 @@ public class ProductController {
 
 
     @GetMapping("/list.do")
-    public Object getProductList(Integer categoryId, String keyword,
-                               @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, String orderBy){
+    public ServerResponse<PageInfo> getProductList(Integer categoryId, String keyword,
+                                         @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, String orderBy){
         return productService.getProductList(categoryId,keyword,pageNum,pageSize,orderBy);
     }
 
     @GetMapping("/detail.do")
-    public Object getProductDetail(Integer productId){
+    public ServerResponse getProductDetail(Integer productId){
         return productService.getProductDetail(productId);
     }
 

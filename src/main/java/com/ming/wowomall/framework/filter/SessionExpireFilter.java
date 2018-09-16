@@ -1,10 +1,11 @@
-package com.ming.wowomall.controller.common;
+package com.ming.wowomall.framework.filter;
 
 import com.ming.wowomall.common.Const;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.util.CookieUtil;
 import com.ming.wowomall.util.JsonUtil;
 import com.ming.wowomall.util.RedisShardedPoolUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -17,6 +18,7 @@ import java.io.IOException;
  * @author m969130721@163.com
  * @date 18-9-15 下午5:21
  */
+@Slf4j
 @WebFilter(filterName = "sessionExpireFilter",urlPatterns = "*.do")
 public class SessionExpireFilter implements Filter {
 
@@ -35,6 +37,7 @@ public class SessionExpireFilter implements Filter {
             String userJsonStr = RedisShardedPoolUtil.get(loginToken);
             User user = JsonUtil.string2Obj(userJsonStr,User.class);
             if (user != null) {
+                log.info("执行sessionExpireFilter,loginToken:{},extime:{}",loginToken,Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
                 RedisShardedPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }
         }

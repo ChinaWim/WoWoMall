@@ -35,7 +35,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login.do")
-    public Object login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
+    public ServerResponse login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
         ServerResponse response = userService.login(username, password);
         if (response.isSuccess()) {
             CookieUtil.writeLoginToken(httpServletResponse,session.getId());
@@ -49,7 +49,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/logout.do")
-    public Object logout(HttpServletRequest request,HttpServletResponse response){
+    public ServerResponse logout(HttpServletRequest request,HttpServletResponse response){
         String loginToken = CookieUtil.readLoginToken(request);
         if (!StringUtils.isBlank(loginToken)){
             RedisShardedPoolUtil.del(loginToken);
@@ -65,7 +65,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register.do")
-    public Object register(User user){
+    public ServerResponse register(User user){
         return userService.register(user);
     }
 
@@ -77,7 +77,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/check_valid.do")
-    public Object checkValid(String str, String type){
+    public ServerResponse checkValid(String str, String type){
         return userService.checkValid(str,type);
     }
 
@@ -86,7 +86,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/get_user_info.do")
-    public Object getUserInfo(HttpServletRequest request){
+    public ServerResponse getUserInfo(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -105,7 +105,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/forget_get_question.do")
-    public Object forgetGetQuestion(String username){
+    public ServerResponse forgetGetQuestion(String username){
         return userService.forgetGetQuestion(username);
     }
 
@@ -117,7 +117,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/forget_check_answer.do")
-    public Object forgetCheckAnswer(String username,String question,String answer){
+    public ServerResponse forgetCheckAnswer(String username,String question,String answer){
         return userService.forgetCheckAnswer(username,question,answer);
     }
 
@@ -131,7 +131,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/forget_reset_password.do")
-    public Object forgetResetPassword(String username,String passwordNew,String forgetToken){
+    public ServerResponse forgetResetPassword(String username,String passwordNew,String forgetToken){
         return userService.forgetResetPassword(username,passwordNew,forgetToken);
     }
 
@@ -142,7 +142,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/reset_password.do")
-    public Object resetPassword(HttpServletRequest request,String passwordOld,String passwordNew){
+    public ServerResponse resetPassword(HttpServletRequest request,String passwordOld,String passwordNew){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -164,7 +164,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/update_information.do")
-    public Object updateInformation(User user,HttpServletRequest request){
+    public ServerResponse updateInformation(User user,HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -190,7 +190,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/get_information.do")
-    public Object getInformation(HttpServletRequest request){
+    public ServerResponse getInformation(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
@@ -206,13 +206,19 @@ public class UserController {
 
 
     @GetMapping("/test")
-    public Object test(HttpServletRequest request){
+    public String test(HttpServletRequest request){
         Enumeration<String> names = request.getParameterNames();
         StringBuilder sb = new StringBuilder();
         while (names.hasMoreElements()){
             sb.append(request.getParameter(names.nextElement())+" ");
         }
         return sb.toString();
+    }
+
+    @GetMapping("/exception")
+    public String exception(HttpServletRequest request){
+        int i = 1/0;
+        return "exception";
     }
 
 

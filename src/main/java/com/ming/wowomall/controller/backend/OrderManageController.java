@@ -31,77 +31,33 @@ public class OrderManageController {
 //    list.do
 
     @RequestMapping("/list.do")
-    public Object list(HttpServletRequest request,
+    public ServerResponse list(HttpServletRequest request,
                        @RequestParam(defaultValue = "1") Integer pageNum,
                        @RequestParam(defaultValue = "10")Integer pageSize){
-        String loginToken = CookieUtil.readLoginToken(request);
-        if (StringUtils.isBlank(loginToken)){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
-        if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        if (Const.Role.ROLE_ADMIN != currentUser.getRole()){
-            return ServerResponse.createByErrorMessage("没有权限");
-        }
+
         return orderService.listManageOrder(pageNum,pageSize);
     }
 
     @RequestMapping("/search.do")
-    public Object search(HttpServletRequest request,Long orderNo,
+    public ServerResponse search(HttpServletRequest request,Long orderNo,
                          @RequestParam(defaultValue = "1") Integer pageNum,
                          @RequestParam(defaultValue = "10")Integer pageSize){
-        String loginToken = CookieUtil.readLoginToken(request);
-        if (StringUtils.isBlank(loginToken)){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
-        if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        if (Const.Role.ROLE_ADMIN != currentUser.getRole()){
-            return ServerResponse.createByErrorMessage("没有权限");
-        }
+
         return orderService.getManageOrder(orderNo,pageNum,pageSize);
     }
 
 
 
     @RequestMapping("/detail.do")
-    public Object detail(HttpServletRequest request,Long orderNo){
-        String loginToken = CookieUtil.readLoginToken(request);
-        if (StringUtils.isBlank(loginToken)){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
-        if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        if (Const.Role.ROLE_ADMIN != currentUser.getRole()){
-            return ServerResponse.createByErrorMessage("没有权限");
-        }
+    public ServerResponse detail(HttpServletRequest request,Long orderNo){
+
         return orderService.getManageOrderDetail(orderNo);
     }
 
 
     @RequestMapping("/send_goods.do")
-    public Object sendGoods(HttpServletRequest request,Long orderNo){
-        String loginToken = CookieUtil.readLoginToken(request);
-        if (StringUtils.isBlank(loginToken)){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        String userJsonStr = RedisShardedPoolUtil.get(loginToken);
-        User currentUser = JsonUtil.string2Obj(userJsonStr,User.class);
-        if (currentUser == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,获取当前用户信息失败");
-        }
-        if (Const.Role.ROLE_ADMIN != currentUser.getRole()){
-            return ServerResponse.createByErrorMessage("没有权限");
-        }
+    public ServerResponse sendGoods(HttpServletRequest request,Long orderNo){
+
         return orderService.sendGoods(orderNo);
     }
 

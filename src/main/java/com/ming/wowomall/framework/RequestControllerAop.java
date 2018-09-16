@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**
@@ -23,9 +20,9 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
-public class RequestActionAop {
+public class RequestControllerAop {
 
-    private static Logger logger = LoggerFactory.getLogger(RequestActionAop.class);
+    private static Logger logger = LoggerFactory.getLogger(RequestControllerAop.class);
 
     private static boolean isDebug = false;
 
@@ -34,7 +31,7 @@ public class RequestActionAop {
         if(isDebug) {
             logger.info("当前项目为debug模式");
         }
-        RequestActionAop.isDebug = isDebug;
+        RequestControllerAop.isDebug = isDebug;
     }
 
     @Around("execution(* com.ming.wowomall.controller.*.*.*(..))")
