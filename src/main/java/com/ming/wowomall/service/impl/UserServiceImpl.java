@@ -2,12 +2,11 @@ package com.ming.wowomall.service.impl;
 
 import com.ming.wowomall.common.Const;
 import com.ming.wowomall.common.ServerResponse;
-import com.ming.wowomall.cache.TokenCache;
 import com.ming.wowomall.dao.UserMapper;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.service.UserService;
 import com.ming.wowomall.util.MD5Util;
-import com.ming.wowomall.util.RedisPoolUtil;
+import com.ming.wowomall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +85,7 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createBySuccessMessage("问题答案错误");
         }
         String forgetToken = UUID.randomUUID().toString();
-        RedisPoolUtil.setEx(Const.TOKEN_PREFIX + username,forgetToken,Const.RedisCacheExtime.CHECK_ANSWER_TOKEN_EXTIME);
+        RedisShardedPoolUtil.setEx(Const.TOKEN_PREFIX + username,forgetToken,Const.RedisCacheExtime.CHECK_ANSWER_TOKEN_EXTIME);
         return ServerResponse.createBySuccess(forgetToken);
     }
 
@@ -99,7 +98,7 @@ public class UserServiceImpl implements UserService {
         if (originUser == null) {
             ServerResponse.createByErrorMessage("用户不存在");
         }
-        if (!StringUtils.equals(RedisPoolUtil.get(Const.TOKEN_PREFIX + username),forgetToken)) {
+        if (!StringUtils.equals(RedisShardedPoolUtil.get(Const.TOKEN_PREFIX + username),forgetToken)) {
             return ServerResponse.createByErrorMessage("token无效或过期");
         }
         //更新

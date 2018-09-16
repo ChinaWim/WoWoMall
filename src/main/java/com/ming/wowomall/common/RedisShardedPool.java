@@ -1,19 +1,20 @@
 package com.ming.wowomall.common;
 
-
 import com.ming.wowomall.util.PropertiesUtil;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.*;
+import redis.clients.util.Hashing;
+import redis.clients.util.Sharded;
 
-/**单机Redis
+import java.util.ArrayList;
+import java.util.List;
+
+/**分布式Redis
  * @author m969130721@163.com
- * @date 18-9-13 上午10:52
+ * @date 18-9-15 下午11:19
  */
+public class RedisShardedPool {
 
-public class RedisPool {
-
-    private static  JedisPool jedisPool;
+    private static ShardedJedisPool pool;
     /**
      *最大连接数
      */
@@ -39,11 +40,15 @@ public class RedisPool {
     private static Boolean testOnReturn = Boolean.parseBoolean(PropertiesUtil.getProperty("redis.test.return","true"));
 
 
-    private static String host = PropertiesUtil.getProperty("redis1.host");
+    private static String redis1Host = PropertiesUtil.getProperty("redis1.host");
 
-    private static Integer port = PropertiesUtil.getPropertyAsInt("redis1.port",6379);
+    private static Integer redis1Port = PropertiesUtil.getPropertyAsInt("redis1.port",6379);
 
-    private  RedisPool(){
+    private static String redis2Host = PropertiesUtil.getProperty("redis2.host");
+
+    private static Integer redis2Port = PropertiesUtil.getPropertyAsInt("redis2.port",6380);
+
+    private  RedisShardedPool(){
 
     }
 
@@ -60,24 +65,35 @@ public class RedisPool {
         config.setTestOnReturn(testOnReturn);
         //连接耗尽的时候，是否阻塞，true阻塞直到超时，false抛异常，默认true
         config.setBlockWhenExhausted(true);
-        jedisPool = new JedisPool(config,host,port,1000*2);
+
+        JedisShardInfo jedisShardInfo1 = new JedisShardInfo(redis1Host,redis1Port,1000*2);
+        JedisShardInfo jedisShardInfo2 = new JedisShardInfo(redis2Host,redis2Port,1000*2);
+
+        List<JedisShardInfo> jedisShardInfoList = new ArrayList<>(2);
+        jedisShardInfoList.add(jedisShardInfo1);
+        jedisShardInfoList.add(jedisShardInfo2);
+        //使用一致性hash算法分配key
+        pool = new ShardedJedisPool(config,jedisShardInfoList, Hashing.MURMUR_HASH, Sharded.DEFAULT_KEY_TAG_PATTERN);
+
     }
 
-    public static Jedis getResource(){
-        return jedisPool.getResource();
+    public static ShardedJedis getResource(){
+        return pool.getResource();
     }
 
 
-    public static void returnResource(Jedis jedis){
-            jedisPool.returnResource(jedis);
+    public static void returnResource(ShardedJedis jedis){
+        pool.returnResource(jedis);
     }
 
-    public static void returnBrokenResource(Jedis jedis){
-            jedisPool.returnBrokenResource(jedis);
+    public static void returnBrokenResource(ShardedJedis jedis){
+        pool.returnBrokenResource(jedis);
     }
 
 
     public static void main(String[] args) {
+
     }
+
 
 }

@@ -4,7 +4,7 @@ import com.ming.wowomall.common.Const;
 import com.ming.wowomall.pojo.User;
 import com.ming.wowomall.util.CookieUtil;
 import com.ming.wowomall.util.JsonUtil;
-import com.ming.wowomall.util.RedisPoolUtil;
+import com.ming.wowomall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;
@@ -32,13 +32,13 @@ public class SessionExpireFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse)servletResponse;
         String loginToken = CookieUtil.readLoginToken(httpServletRequest);
         if (!StringUtils.isBlank(loginToken)) {
-            String userJsonStr = RedisPoolUtil.get(loginToken);
+            String userJsonStr = RedisShardedPoolUtil.get(loginToken);
             User user = JsonUtil.string2Obj(userJsonStr,User.class);
             if (user != null) {
-                RedisPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+                RedisShardedPoolUtil.expire(loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }
         }
-        doFilter(httpServletRequest,httpServletResponse,filterChain);
+        filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
 
     @Override

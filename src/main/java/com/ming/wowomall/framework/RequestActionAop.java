@@ -39,8 +39,8 @@ public class RequestActionAop {
 
     @Around("execution(* com.ming.wowomall.controller.*.*.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        logger.info("请求IP:"+request.getRemoteHost());
+//        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+//        logger.info("请求IP:"+request.getRemoteHost());
         Class<?> clazz = point.getTarget().getClass();
         Logger log = LoggerFactory.getLogger(clazz);
         if (isDebug) {
