@@ -4,7 +4,7 @@
 <h2>环境</h2>
 JDK版本：8<br/>
 数据库：MySQL5.7<br/>
-技术栈：SpringBoot2.0.2/MyBatis3.4.6/Joda/guava<br/>
+技术栈：SpringBoot2.0.2/MyBatis3.4.6/Joda/Guava<br/>
 Nginx版本：1.15.0<br/>
 Maven版本：3.5.3<br/>
 Redis版本：4.0.9<br/>
