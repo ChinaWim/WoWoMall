@@ -11,6 +11,8 @@ Redis版本：4.0.9<br/>
 
 <h2>当前版本功能说明</h2>
 <h3>单点登录,tomcat集群,分布式Redis,分布式锁关闭订单</h3>
+Redis+Cookie+Jackson+Filter原生实现集群session共享问题<br/>
+Spring Schedule+Redis分布式锁<br/>
 
 <h3>用户模块</h3>
 横向越权、纵向越权、<br/>
