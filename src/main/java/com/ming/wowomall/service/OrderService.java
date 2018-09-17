@@ -41,4 +41,9 @@ public interface OrderService {
     ServerResponse<OrderVO> getManageOrderDetail(Long orderNo);
 
     ServerResponse sendGoods(Long orderNo);
+
+    /**
+     * 关闭在hour小时内的订单
+     */
+    void closedOrder(Integer hour);
 }

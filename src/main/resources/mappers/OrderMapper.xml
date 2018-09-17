@@ -48,8 +48,18 @@
     order by create_time desc
   </select>
 
+    <select id="listOrderByStatusCreateTime" resultType="com.ming.wowomall.pojo.Order" parameterType="map">
+      select <include refid="Base_Column_List"/>
+      from wowomall_order
+      where
+      <![CDATA[
+      create_time <= #{dateTime}
+      ]]>
+      and status = #{status}
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from wowomall_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -219,5 +229,13 @@
     set status = #{status}
     where user_id = #{userId}
     and order_no = #{orderNo}
+  </update>
+  <update id="updateListOrderStatus" parameterType="map">
+    update wowomall_order
+    set status = #{status}
+    where id in
+    <foreach collection="orderIds" item="id" separator="," open="(" close=")">
+      id
+    </foreach>
   </update>
 </mapper>

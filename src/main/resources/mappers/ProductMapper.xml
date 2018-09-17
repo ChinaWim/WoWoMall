@@ -50,7 +50,7 @@
         </if>
       </where>
   </select>
-  <select id="listProductListVOByKeyWordCategoryId" resultType="com.ming.wowomall.vo.ProductListVO" parameterType="map">
+  <select id="listActiveProductListVOByKeyWordCategoryId" resultType="com.ming.wowomall.vo.ProductListVO" parameterType="map">
     select <include refid="Base_Show_List"/> from wowomall_product
     <where>
       status = 1
@@ -66,6 +66,12 @@
         or detail like concat('%',#{keyword},'%')
       </if>
     </where>
+  </select>
+
+  <select id="getStockById" resultType="java.lang.Integer" >
+  select stock from wowomall_product
+  where id = #{productId}
+  for update
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

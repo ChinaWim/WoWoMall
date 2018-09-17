@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+/**
+ * @author m969130721@163.com
+ * @date 18-9-17 上午11:13
+ */
 public class PropertiesUtil {
 
     private static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
@@ -61,6 +65,33 @@ public class PropertiesUtil {
         }
         try{
             Integer value = Integer.parseInt(valueStr);
+            return value;
+        }catch (NumberFormatException e){
+            return defaultValue;
+        }
+    }
+
+    public static Long getPropertyAsLong(String key){
+        String valueStr = props.getProperty(key.trim());
+        if (StringUtils.isBlank(valueStr)) {
+            return 0L;
+        }
+        try{
+            Long value = Long.parseLong(valueStr);
+            return value;
+        }catch (NumberFormatException e){
+            return 0L;
+        }
+    }
+
+
+    public static Long getPropertyAsLong(String key, Long defaultValue){
+        String valueStr = props.getProperty(key.trim());
+        if (StringUtils.isBlank(valueStr)) {
+            return defaultValue;
+        }
+        try{
+            Long value = Long.parseLong(valueStr);
             return value;
         }catch (NumberFormatException e){
             return defaultValue;

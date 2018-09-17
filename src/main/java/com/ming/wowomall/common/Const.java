@@ -74,7 +74,16 @@ public class Const {
          */
         int REDIS_SESSION_EXTIME = 60 * 30;
 
+        /**
+         * 重置密码问题token
+         */
         int CHECK_ANSWER_TOKEN_EXTIME = 60 * 60 * 12;
+    }
+
+
+    public interface RedisLockKey{
+        String CLOSE_ORDER_TASK_LOCK = "CLOSE_ORDER_TASK_LOCK";
+
     }
 
 

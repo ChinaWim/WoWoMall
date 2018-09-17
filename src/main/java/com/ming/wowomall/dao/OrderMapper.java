@@ -29,6 +29,7 @@ public interface OrderMapper {
 
     List<Order> listOrder();
 
+    List<Order> listOrderByStatusCreateTime(@Param("status")Integer status,@Param("dateTime") String dateTime);
 
-
+    int updateListOrderStatus(@Param("orderIds") List<Integer> orderIds,@Param("status") Integer status);
 }

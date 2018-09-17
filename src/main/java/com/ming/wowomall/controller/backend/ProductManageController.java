@@ -34,9 +34,6 @@ public class ProductManageController {
     private ProductService productService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private FileService fileService;
 
     @GetMapping("/list.do")
@@ -49,7 +46,7 @@ public class ProductManageController {
     @GetMapping("/search.do")
     public ServerResponse searchProduct(HttpServletRequest request,String productName,Integer productId,@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "10")Integer pageSize){
 
-        return productService.getProductByNameOrProductId(productName,productId,pageNum,pageSize);
+        return productService.getManageProductByNameOrProductId(productName,productId,pageNum,pageSize);
     }
 
     /**
@@ -78,7 +75,7 @@ public class ProductManageController {
     @GetMapping("/detail.do")
     public ServerResponse getProductDetail(HttpServletRequest request,Integer productId){
 
-        return productService.getProductDetail(productId);
+        return productService.getManageProductDetail(productId);
     }
 
     @PostMapping("/set_sale_status.do")

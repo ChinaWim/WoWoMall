@@ -5,12 +5,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.lang.reflect.Proxy;
 
 @SpringBootApplication
 @ServletComponentScan
 @EnableCaching
+@EnableScheduling
 @MapperScan("com.ming.wowomall.dao")
 public class WowomallApplication {
     public static void main(String[] args) {

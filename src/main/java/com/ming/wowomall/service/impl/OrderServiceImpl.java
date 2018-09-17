@@ -18,13 +18,12 @@ import com.ming.wowomall.common.Const;
 import com.ming.wowomall.common.ServerResponse;
 import com.ming.wowomall.dao.*;
 import com.ming.wowomall.pojo.*;
-import com.ming.wowomall.service.CartService;
 import com.ming.wowomall.service.OrderService;
-import com.ming.wowomall.service.PayInfoService;
 import com.ming.wowomall.util.*;
 import com.ming.wowomall.vo.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -435,7 +434,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    //todo 库存处理?
     @Override
     public ServerResponse sendGoods(Long orderNo){
         Order order = orderMapper.getByOrderNo(orderNo);
@@ -453,6 +451,29 @@ public class OrderServiceImpl implements OrderService {
                                 : ServerResponse.createByErrorMessage("发货失败");
     }
 
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void closedOrder(Integer hour) {
+       String dateTime = DateTimeUtil.dateToStr(DateUtils.addHours(new Date(),-hour));
+        List<Order> orderList = orderMapper.listOrderByStatusCreateTime(Const.OrderStatusEnum.NO_PAY.getCode(), dateTime);
+        List<Integer> orderIds = new ArrayList<>();
+        for (Order order : orderList) {
+            List<OrderItem> orderItemList = orderItemMapper.listByOrderNo(order.getOrderNo());
+            for (OrderItem orderItem : orderItemList) {
+                //todo
+                //一定要用主键where条件，防止锁表。同时必须是支持MySQL的InnoDB
+//                Integer stock = productMapper.getStockById(orderItem.getProductId());
+                productMapper.updateStock(orderItem.getProductId(),orderItem.getQuantity());
+            }
+            orderIds.add(order.getId());
+        }
+        //关闭订单
+        if (CollectionUtils.isNotEmpty(orderIds)) {
+            orderMapper.updateListOrderStatus(orderIds,Const.OrderStatusEnum.ORDER_CLOSE.getCode());
+        }
+    }
 
 
     /**

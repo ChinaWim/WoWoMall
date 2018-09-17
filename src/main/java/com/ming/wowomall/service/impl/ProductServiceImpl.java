@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ServerResponse<PageInfo> getProductByNameOrProductId(String productName, Integer productId, Integer pageNum, Integer pageSize) {
+    public ServerResponse<PageInfo> getManageProductByNameOrProductId(String productName, Integer productId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize, true);
         List<ProductListVO> productVOList = productMapper.listProductListVOByNameOrProductId(productName, productId);
         productVOList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
@@ -135,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
                 PageHelper.orderBy(orderArray[0]+" "+orderArray[1]);
             }
         }
-        List<ProductListVO> productVOList = productMapper.listProductListVOByKeyWordCategoryId(categoryIdList.size() == 0 ? null : categoryIdList, keyword);
+        List<ProductListVO> productVOList = productMapper.listActiveProductListVOByKeyWordCategoryId(categoryIdList.size() == 0 ? null : categoryIdList, keyword);
         productVOList.stream().forEach(x->x.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix","http://image.wowomall.com/")));
         PageInfo<ProductListVO> pageInfo = new PageInfo<>(productVOList);
         return ServerResponse.createBySuccess(pageInfo);
