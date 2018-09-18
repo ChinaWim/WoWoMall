@@ -198,6 +198,19 @@
             <version>2.6.0</version>
         </dependency>
 
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <!-- jackson-dataformat-avro -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-avro</artifactId>
+            <version>2.9.6</version>
+        </dependency>
+
 
 
 

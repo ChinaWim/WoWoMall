@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <!--<encoding>UTF-8</encoding>-->
         <encoder>
             <pattern>%d %p (%file:%line\)- %m%n</pattern>
             <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->

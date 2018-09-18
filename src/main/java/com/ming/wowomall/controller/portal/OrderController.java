@@ -75,7 +75,7 @@ public class OrderController {
     }
 
     /**
-     * 支付
+     * 支付,生成二维码
      * @param orderNo
      * @param request
      * @return
