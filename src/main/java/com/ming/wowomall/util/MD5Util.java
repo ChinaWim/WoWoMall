@@ -55,6 +55,8 @@ public class MD5Util {
         return hexDigits[d1] + hexDigits[d2];
     }
 
-
+    public static void main(String[] args) {
+        System.out.println(MD5Util.MD5EncodeUtf8("123"));
+    }
 
 }

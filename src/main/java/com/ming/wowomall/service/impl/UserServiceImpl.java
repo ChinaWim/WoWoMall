@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
     public ServerResponse register(User user) {
         ServerResponse response = this.checkValid(user.getUsername(), Const.USERNAME);
         if (!response.isSuccess()) {
-            return ServerResponse.createByErrorMessage("用户已存在");
+            return response;
         }
         response = this.checkValid(user.getEmail(), Const.EMAIL);
         if (!response.isSuccess()) {
-            return ServerResponse.createByErrorMessage("邮箱已存在");
+            return response;
         }
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         int effectRow = userMapper.insertSelective(user);
@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse checkValid(String str, String type) {
-        if (StringUtils.isNoneBlank(str,type)) {
+        if (!StringUtils.isNoneBlank(str,type)) {
             return ServerResponse.createByErrorMessage("传递参数错误");
         }
         int resultCount = 0;
