@@ -16,16 +16,15 @@ import java.lang.reflect.Proxy;
 @EnableCaching
 @EnableScheduling
 @MapperScan("com.ming.wowomall.dao")
-// extends SpringBootServletInitializer
-public class WowomallApplication {
+
+public class WowomallApplication extends SpringBootServletInitializer{
     public static void main(String[] args) {
         SpringApplication.run(WowomallApplication.class, args);
     }
-
-    //打包成war包
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-//        return application.sources(WowomallApplication.class);
-//    }
+//    打包成war包
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(WowomallApplication.class);
+    }
 
 }

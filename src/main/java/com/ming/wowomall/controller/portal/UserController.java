@@ -34,7 +34,7 @@ public class UserController {
      * @param password
      * @return
      */
-    @PostMapping("/login.do")
+    @RequestMapping(value = "/login.do",method = RequestMethod.POST)
     public ServerResponse login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
         ServerResponse response = userService.login(username, password);
         if (response.isSuccess()) {
@@ -48,7 +48,7 @@ public class UserController {
      * 退出登录
      * @return
      */
-    @GetMapping("/logout.do")
+        @RequestMapping(value = "/logout.do",method = RequestMethod.POST)
     public ServerResponse logout(HttpServletRequest request,HttpServletResponse response){
         String loginToken = CookieUtil.readLoginToken(request);
         if (!StringUtils.isBlank(loginToken)){
@@ -64,7 +64,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @PostMapping("/register.do")
+    @RequestMapping(value = "/register.do",method = RequestMethod.POST)
     public ServerResponse register(User user){
         return userService.register(user);
     }
@@ -76,7 +76,7 @@ public class UserController {
      * @param type
      * @return
      */
-    @PostMapping("/check_valid.do")
+    @RequestMapping(value = "/check_valid.do",method = RequestMethod.POST)
     public ServerResponse checkValid(String str, String type){
         return userService.checkValid(str,type);
     }
@@ -85,7 +85,7 @@ public class UserController {
      * 获取登录用户信息
      * @return
      */
-    @PostMapping("/get_user_info.do")
+    @RequestMapping(value = "/get_user_info.do",method = RequestMethod.POST)
     public ServerResponse getUserInfo(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
@@ -104,7 +104,7 @@ public class UserController {
      * @param username
      * @return
      */
-    @PostMapping("/forget_get_question.do")
+    @RequestMapping(value = "/forget_get_question.do",method = RequestMethod.POST)
     public ServerResponse forgetGetQuestion(String username){
         return userService.forgetGetQuestion(username);
     }
@@ -116,7 +116,7 @@ public class UserController {
      * @param answer
      * @return
      */
-    @PostMapping("/forget_check_answer.do")
+    @RequestMapping(value = "/forget_check_answer.do",method = RequestMethod.POST)
     public ServerResponse forgetCheckAnswer(String username,String question,String answer){
         return userService.forgetCheckAnswer(username,question,answer);
     }
@@ -130,7 +130,7 @@ public class UserController {
      * @param forgetToken
      * @return
      */
-    @PostMapping("/forget_reset_password.do")
+    @RequestMapping(value = "/forget_reset_password.do",method = RequestMethod.POST)
     public ServerResponse forgetResetPassword(String username,String passwordNew,String forgetToken){
         return userService.forgetResetPassword(username,passwordNew,forgetToken);
     }
@@ -141,7 +141,7 @@ public class UserController {
      * @param passwordNew
      * @return
      */
-    @PostMapping("/reset_password.do")
+    @RequestMapping(value = "/reset_password.do",method = RequestMethod.POST)
     public ServerResponse resetPassword(HttpServletRequest request,String passwordOld,String passwordNew){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
@@ -163,7 +163,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @PostMapping("/update_information.do")
+    @RequestMapping(value = "/update_information.do",method = RequestMethod.POST)
     public ServerResponse updateInformation(User user,HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
@@ -189,7 +189,7 @@ public class UserController {
      * 获取当前登录用户的详细信息，并强制登录
      * @return
      */
-    @PostMapping("/get_information.do")
+    @RequestMapping(value = "/get_information.do",method = RequestMethod.POST)
     public ServerResponse getInformation(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){

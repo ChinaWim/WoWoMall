@@ -21,13 +21,13 @@ public class ProductController {
     private ProductService productService;
 
 
-    @GetMapping("/list.do")
+    @RequestMapping("/list.do")
     public ServerResponse<PageInfo> getProductList(Integer categoryId, String keyword,
                                          @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, String orderBy){
         return productService.getProductList(categoryId,keyword,pageNum,pageSize,orderBy);
     }
 
-    @GetMapping("/detail.do")
+    @RequestMapping("/detail.do")
     public ServerResponse getProductDetail(Integer productId){
         return productService.getProductDetail(productId);
     }

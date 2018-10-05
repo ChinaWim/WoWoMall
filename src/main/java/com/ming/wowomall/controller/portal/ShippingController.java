@@ -28,7 +28,7 @@ public class ShippingController {
     private ShippingService shippingService;
 
 
-    @RequestMapping("/add.do")
+    @RequestMapping(value = "/add.do")
     public ServerResponse add(HttpServletRequest request, Shipping shipping){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){

@@ -30,7 +30,7 @@ public class CartController {
     private CartService cartService;
 
 
-    @GetMapping("/list.do")
+    @RequestMapping("/list.do")
     public ServerResponse list(HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){
@@ -44,7 +44,7 @@ public class CartController {
         return cartService.list(currentUser.getId());
     }
 
-    @GetMapping("/add.do")
+    @RequestMapping("/add.do")
     public ServerResponse addProduct(HttpServletRequest request,Integer productId,Integer count){
         String loginToken = CookieUtil.readLoginToken(request);
         if (StringUtils.isBlank(loginToken)){

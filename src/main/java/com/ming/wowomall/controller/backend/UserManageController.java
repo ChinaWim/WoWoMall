@@ -8,10 +8,7 @@ import com.ming.wowomall.util.CookieUtil;
 import com.ming.wowomall.util.JsonUtil;
 import com.ming.wowomall.util.RedisShardedPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,7 +25,7 @@ public class UserManageController {
     private UserService userService;
 
 
-    @PostMapping("/login.do")
+    @RequestMapping(value = "/login.do",method = RequestMethod.POST)
     public ServerResponse login(String username, String password, HttpSession session, HttpServletResponse httpServletResponse){
         ServerResponse<User> response = userService.login(username, password);
         if (response.isSuccess()) {

@@ -36,14 +36,14 @@ public class ProductManageController {
     @Autowired
     private FileService fileService;
 
-    @GetMapping("/list.do")
+    @RequestMapping("/list.do")
     public ServerResponse getProductList(HttpServletRequest request, @RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
                                          @RequestParam(name = "pageSize",defaultValue = "10")Integer pageSize){
         return productService.getManageProductList(pageNum,pageSize);
     }
 
 
-    @GetMapping("/search.do")
+    @RequestMapping("/search.do")
     public ServerResponse searchProduct(HttpServletRequest request,String productName,Integer productId,@RequestParam(defaultValue = "1")Integer pageNum,@RequestParam(defaultValue = "10")Integer pageSize){
 
         return productService.getManageProductByNameOrProductId(productName,productId,pageNum,pageSize);
@@ -55,7 +55,7 @@ public class ProductManageController {
      * @param file
      * @return
      */
-    @PostMapping("/upload.do")
+    @RequestMapping(value = "/upload.do",method = RequestMethod.POST)
     public ServerResponse upload(HttpServletRequest request,@RequestParam(name = "upload_file")MultipartFile file){
 
         String classPath = ProductManageController.class.getResource("/").getPath();
@@ -72,18 +72,18 @@ public class ProductManageController {
     }
 
 
-    @GetMapping("/detail.do")
+    @RequestMapping("/detail.do")
     public ServerResponse getProductDetail(HttpServletRequest request,Integer productId){
 
         return productService.getManageProductDetail(productId);
     }
 
-    @PostMapping("/set_sale_status.do")
+    @RequestMapping(value = "/set_sale_status.do",method = RequestMethod.POST)
     public ServerResponse setSaleStatus(HttpServletRequest request,Integer productId,Integer status){
         return productService.updateProductStatus(productId,status);
     }
 
-    @PostMapping("/save.do")
+    @RequestMapping(value = "/save.do",method = RequestMethod.POST)
     public ServerResponse save(HttpServletRequest request,Product product){
         return productService.insertOrUpdate(product);
     }
@@ -95,7 +95,7 @@ public class ProductManageController {
      * @param file
      * @return
      */
-    @PostMapping("/richtext_img_upload.do")
+    @RequestMapping(value = "/richtext_img_upload.do",method = RequestMethod.POST)
     public Map richtextImgUpload(HttpServletResponse response, HttpServletRequest request, @RequestParam(name = "upload_file")MultipartFile file){
 
         String classPath = ProductManageController.class.getResource("/").getPath();
