@@ -22,11 +22,11 @@ public class RedisShardedPool {
     /**
      *最大空闲数
      */
-    private static Integer maxIdel = PropertiesUtil.getPropertyAsInt("redis.max.idel",10);
+    private static Integer maxIdle = PropertiesUtil.getPropertyAsInt("redis.max.idle",10);
     /**
      *最小的空闲数
      */
-    private static Integer minIdel = PropertiesUtil.getPropertyAsInt("redis.min.idel",3);
+    private static Integer minIdle = PropertiesUtil.getPropertyAsInt("redis.min.idle",3);
     /**
      *在borrow一个jedis是否要进行验证操作
      *如果赋值为true.则得到的jedis肯定是可用的
@@ -34,7 +34,7 @@ public class RedisShardedPool {
     private static Boolean testOnBorrow = Boolean.parseBoolean(PropertiesUtil.getProperty("redis.test.borrow","true"));
 
     /**
-     *在redis一个jedis是否要进行验证操作
+     *在释放一个jedis是否要进行验证操作
      *如果赋值为true.则放回jedis肯定是可用的
      */
     private static Boolean testOnReturn = Boolean.parseBoolean(PropertiesUtil.getProperty("redis.test.return","true"));
@@ -59,8 +59,8 @@ public class RedisShardedPool {
     private static void initPool(){
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(maxTotal);
-        config.setMaxIdle(maxIdel);
-        config.setMinIdle(minIdel);
+        config.setMaxIdle(maxIdle);
+        config.setMinIdle(minIdle);
         config.setTestOnBorrow(testOnBorrow);
         config.setTestOnReturn(testOnReturn);
         //连接耗尽的时候，是否阻塞，true阻塞直到超时，false抛异常，默认true

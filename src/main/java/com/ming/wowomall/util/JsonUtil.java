@@ -59,12 +59,12 @@ public class JsonUtil {
         }
     }
 
-    public static <T> T string2Obj(String str,Class<T> calzz){
-        if (StringUtils.isEmpty(str) || calzz == null) {
+    public static <T> T string2Obj(String str,Class<T> clazz){
+        if (StringUtils.isEmpty(str) || clazz == null) {
             return null;
         }
         try {
-            return calzz.equals(String.class) ? (T)str : MAPPER.readValue(str, calzz);
+            return clazz.equals(String.class) ? (T)str : MAPPER.readValue(str, clazz);
         } catch (IOException e) {
             log.warn("parse String to Object error ",e);
             return null;
